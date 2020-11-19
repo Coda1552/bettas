@@ -1,0 +1,10 @@
+modLoader="javafml" #mandatory
+loaderVersion="[35,)" #mandatory This is typically bumped every Minecraft version by Forge. See our download page for lists of versions.
+license="All rights reserved"
+[[mods]] #mandatory
+modId="bettas" #mandatory
+version="${file.jarVersion}" #mandatory
+displayName="Bettas" #mandatory
+credits="Coda (code), Tazz (art) & Ninni (art)" #optional
+authors="Team Draco" #optional
+description='''A small mod containing a new fish: the betta! Bettas can be bucketed just like normal fish and will fight and kill eachother.'''

@@ -1,0 +1,140 @@
+{
+  "variants": {
+    "pickles=1,waterlogged=true": [
+      {
+        "model": "bettas:block/moss_balls_one"
+      },
+      {
+        "model": "bettas:block/moss_balls_one",
+        "y": 90
+      },
+      {
+        "model": "bettas:block/moss_balls_one",
+        "y": 180
+      },
+      {
+        "model": "bettas:block/moss_balls_one",
+        "y": 270
+      }
+    ],
+    "pickles=1,waterlogged=false": [
+      {
+        "model": "bettas:block/moss_balls_one"
+      },
+      {
+        "model": "bettas:block/moss_balls_one",
+        "y": 90
+      },
+      {
+        "model": "bettas:block/moss_balls_one",
+        "y": 180
+      },
+      {
+        "model": "bettas:block/moss_balls_one",
+        "y": 270
+      }
+    ],
+    "pickles=2,waterlogged=true": [
+      {
+        "model": "bettas:block/moss_balls_two"
+      },
+      {
+        "model": "bettas:block/moss_balls_two",
+        "y": 90
+      },
+      {
+        "model": "bettas:block/moss_balls_two",
+        "y": 180
+      },
+      {
+        "model": "bettas:block/moss_balls_two",
+        "y": 270
+      }
+    ],
+    "pickles=2,waterlogged=false": [
+      {
+        "model": "bettas:block/moss_balls_two"
+      },
+      {
+        "model": "bettas:block/moss_balls_two",
+        "y": 90
+      },
+      {
+        "model": "bettas:block/moss_balls_two",
+        "y": 180
+      },
+      {
+        "model": "bettas:block/moss_balls_two",
+        "y": 270
+      }
+    ],
+    "pickles=3,waterlogged=true": [
+      {
+        "model": "bettas:block/moss_balls_three"
+      },
+      {
+        "model": "bettas:block/moss_balls_three",
+        "y": 90
+      },
+      {
+        "model": "bettas:block/moss_balls_three",
+        "y": 180
+      },
+      {
+        "model": "bettas:block/moss_balls_three",
+        "y": 270
+      }
+    ],
+    "pickles=3,waterlogged=false": [
+      {
+        "model": "bettas:block/moss_balls_three"
+      },
+      {
+        "model": "bettas:block/moss_balls_three",
+        "y": 90
+      },
+      {
+        "model": "bettas:block/moss_balls_three",
+        "y": 180
+      },
+      {
+        "model": "bettas:block/moss_balls_three",
+        "y": 270
+      }
+    ],
+    "pickles=4,waterlogged=true": [
+      {
+        "model": "bettas:block/moss_balls_four"
+      },
+      {
+        "model": "bettas:block/moss_balls_four",
+        "y": 90
+      },
+      {
+        "model": "bettas:block/moss_balls_four",
+        "y": 180
+      },
+      {
+        "model": "bettas:block/moss_balls_four",
+        "y": 270
+      }
+    ],
+    "pickles=4,waterlogged=false": [
+      {
+        "model": "bettas:block/moss_balls_four"
+      },
+      {
+        "model": "bettas:block/moss_balls_four",
+        "y": 90
+      },
+      {
+        "model": "bettas:block/moss_balls_four",
+        "y": 180
+      },
+      {
+        "model": "bettas:block/moss_balls_four",
+        "y": 270
+      }
+    ]
+  }
+}

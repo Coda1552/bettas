@@ -1,0 +1,35 @@
+{
+	"ambientocclusion": false,
+	"textures": {
+		"0": "bettas:block/moss_ball",
+		"particle": "bettas:block/moss_ball"
+	},
+	"elements": [
+		{
+			"from": [9, 0, 9],
+			"to": [16, 7, 16],
+			"rotation": {"angle": 0, "axis": "y", "origin": [17, 8, 17]},
+			"faces": {
+				"north": {"uv": [9, 9, 16, 16], "texture": "#0"},
+				"east": {"uv": [9, 9, 16, 16], "texture": "#0"},
+				"south": {"uv": [9, 9, 16, 16], "texture": "#0"},
+				"west": {"uv": [9, 9, 16, 16], "texture": "#0"},
+				"up": {"uv": [9, 9, 16, 16], "texture": "#0"},
+				"down": {"uv": [9, 9, 16, 16], "texture": "#0"}
+			}
+		},
+		{
+			"from": [2, 0, 0],
+			"to": [6, 4, 4],
+			"rotation": {"angle": 0, "axis": "y", "origin": [10, 8, 8]},
+			"faces": {
+				"north": {"uv": [0, 7, 4, 11], "texture": "#0"},
+				"east": {"uv": [0, 7, 4, 11], "texture": "#0"},
+				"south": {"uv": [0, 7, 4, 11], "texture": "#0"},
+				"west": {"uv": [0, 7, 4, 11], "texture": "#0"},
+				"up": {"uv": [0, 7, 4, 11], "texture": "#0"},
+				"down": {"uv": [0, 7, 4, 11], "texture": "#0"}
+			}
+		}
+	]
+}

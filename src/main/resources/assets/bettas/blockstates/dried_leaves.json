@@ -1,0 +1,106 @@
+{
+  "variants": {
+    "pickles=1,waterlogged=true": [
+      {
+        "model": "bettas:block/loosely_piled_dried_leaves"
+      },
+      {
+        "model": "bettas:block/loosely_piled_dried_leaves",
+        "y": 90
+      },
+      {
+        "model": "bettas:block/loosely_piled_dried_leaves",
+        "y": 180
+      },
+      {
+        "model": "bettas:block/loosely_piled_dried_leaves",
+        "y": 270
+      }
+    ],
+    "pickles=1,waterlogged=false": [
+      {
+        "model": "bettas:block/loosely_piled_dried_leaves"
+      },
+      {
+        "model": "bettas:block/loosely_piled_dried_leaves",
+        "y": 90
+      },
+      {
+        "model": "bettas:block/loosely_piled_dried_leaves",
+        "y": 180
+      },
+      {
+        "model": "bettas:block/loosely_piled_dried_leaves",
+        "y": 270
+      }
+    ],
+    "pickles=2,waterlogged=true": [
+      {
+        "model": "bettas:block/piled_dried_leaves"
+      },
+      {
+        "model": "bettas:block/piled_dried_leaves",
+        "y": 90
+      },
+      {
+        "model": "bettas:block/piled_dried_leaves",
+        "y": 180
+      },
+      {
+        "model": "bettas:block/piled_dried_leaves",
+        "y": 270
+      }
+    ],
+    "pickles=2,waterlogged=false": [
+      {
+        "model": "bettas:block/piled_dried_leaves"
+      },
+      {
+        "model": "bettas:block/piled_dried_leaves",
+        "y": 90
+      },
+      {
+        "model": "bettas:block/piled_dried_leaves",
+        "y": 180
+      },
+      {
+        "model": "bettas:block/piled_dried_leaves",
+        "y": 270
+      }
+    ],
+    "pickles=3,waterlogged=true": [
+      {
+        "model": "bettas:block/heavily_piled_dried_leaves"
+      },
+      {
+        "model": "bettas:block/heavily_piled_dried_leaves",
+        "y": 90
+      },
+      {
+        "model": "bettas:block/heavily_piled_dried_leaves",
+        "y": 180
+      },
+      {
+        "model": "bettas:block/heavily_piled_dried_leaves",
+        "y": 270
+      }
+    ],
+    "pickles=3,waterlogged=false": [
+      {
+        "model": "bettas:block/heavily_piled_dried_leaves"
+      },
+      {
+        "model": "bettas:block/heavily_piled_dried_leaves",
+        "y": 90
+      },
+      {
+        "model": "bettas:block/heavily_piled_dried_leaves",
+        "y": 180
+      },
+      {
+        "model": "bettas:block/heavily_piled_dried_leaves",
+        "y": 270
+      }
+    ]
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "###",
+    "###",
+    "###"
+  ],
+  "key": {
+    "#": {
+      "item": "bettas:moss_ball"
+    }
+  },
+  "result": {
+    "item": "bettas:moss_ball_block"
+  }
+}
