@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:gameplay",
+  "pools": [
+    {
+      "rolls": 1.0,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "weight": 10,
+          "name": "bettas:betta_fish"
+        }
+      ]
+    }
+  ]
+}

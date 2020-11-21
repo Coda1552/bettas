@@ -26,6 +26,7 @@ import javax.annotation.Nullable;
 public class BettaFishEntity extends AbstractFishEntity {
     private static final DataParameter<Integer> VARIANT = EntityDataManager.createKey(BettaFishEntity.class, DataSerializers.VARINT);
     private static final DataParameter<Boolean> FROM_BUCKET = EntityDataManager.createKey(BettaFishEntity.class, DataSerializers.BOOLEAN);
+    private static final DataParameter<Float> HEALTH = EntityDataManager.createKey(BettaFishEntity.class, DataSerializers.FLOAT);
 
     public BettaFishEntity(EntityType<? extends BettaFishEntity> type, World worldIn) {
         super(type, worldIn);
@@ -106,13 +107,16 @@ public class BettaFishEntity extends AbstractFishEntity {
             if (this.rand.nextInt(3) == 0) {
                 setVariant(rand.nextInt(28));
             } else {
-                setVariant(0);
+                setVariant(24);
             }
         }
         else {
-            if (dataTag.contains("BucketVariantTag", 3)){
+            if (dataTag.contains("BucketVariantTag", 3)) {
                 this.setVariant(dataTag.getInt("BucketVariantTag"));
                 this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, BettaFishEntity.class, false));
+            }
+            if (dataTag.contains("Health", 99)) {
+                this.setHealth(dataTag.getFloat("Health"));
             }
         }
         return super.onInitialSpawn(worldIn, difficultyIn, reason, spawnDataIn, dataTag);
@@ -121,6 +125,7 @@ public class BettaFishEntity extends AbstractFishEntity {
     protected void setBucketData(ItemStack bucket) {
         CompoundNBT compoundnbt = bucket.getOrCreateTag();
         compoundnbt.putInt("BucketVariantTag", this.getVariant());
+        compoundnbt.putFloat("Health", this.getHealth());
     }
 
     @Override

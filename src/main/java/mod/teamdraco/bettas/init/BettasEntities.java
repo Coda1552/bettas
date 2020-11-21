@@ -14,7 +14,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 public class BettasEntities {
     public static final DeferredRegister<EntityType<?>> ENTITIES = DeferredRegister.create(ForgeRegistries.ENTITIES, Bettas.MOD_ID);
 
-    public static final EntityType<BettaFishEntity> BETTA_FISH = create("betta_fish", BettaFishEntity::new, EntityClassification.WATER_CREATURE, 0.3f, 0.3f, 0x671317, 0xfff4e7);
+    public static final EntityType<BettaFishEntity> BETTA_FISH = create("betta_fish", BettaFishEntity::new, EntityClassification.WATER_CREATURE, 0.3f, 0.3f, 0x613d2a, 0x2dceff);
 
     private static <T extends CreatureEntity> EntityType<T> create(String name, EntityType.IFactory<T> factory, EntityClassification classification, float width, float height, int pri, int sec) {
         final Item.Properties properties = new Item.Properties().group(ItemGroup.MISC);
