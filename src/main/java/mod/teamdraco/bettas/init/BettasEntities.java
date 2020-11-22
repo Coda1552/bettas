@@ -7,14 +7,16 @@ import net.minecraft.entity.ai.attributes.GlobalEntityTypeAttributes;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.SpawnEggItem;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.event.RegistryEvent;
+import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 
 public class BettasEntities {
     public static final DeferredRegister<EntityType<?>> ENTITIES = DeferredRegister.create(ForgeRegistries.ENTITIES, Bettas.MOD_ID);
 
-    public static final EntityType<BettaFishEntity> BETTA_FISH = create("betta_fish", BettaFishEntity::new, EntityClassification.WATER_CREATURE, 0.3f, 0.3f, 0x613d2a, 0x2dceff);
+    public static final RegistryObject<EntityType<BettaFishEntity>> BETTA_FISH = ENTITIES.register("betta_fish", () -> EntityType.Builder.<BettaFishEntity>create(BettaFishEntity::new, EntityClassification.WATER_CREATURE).size(0.3f, 0.3f).build(new ResourceLocation(Bettas.MOD_ID, "betta_fish").toString()));
 
     private static <T extends CreatureEntity> EntityType<T> create(String name, EntityType.IFactory<T> factory, EntityClassification classification, float width, float height, int pri, int sec) {
         final Item.Properties properties = new Item.Properties().group(ItemGroup.MISC);

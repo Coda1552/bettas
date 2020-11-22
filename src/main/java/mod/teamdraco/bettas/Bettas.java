@@ -52,8 +52,6 @@ public class Bettas {
 
         bus.addGenericListener(EntityType.class, BettasEntities::init);
 
-        EntitySpawnPlacementRegistry.register(BettasEntities.BETTA_FISH, EntitySpawnPlacementRegistry.PlacementType.IN_WATER, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, AbstractFishEntity::func_223363_b);
-
         instance = this;
         MinecraftForge.EVENT_BUS.register(this);
     }
@@ -65,7 +63,7 @@ public class Bettas {
             case SWAMP:
                 float temperature = climate.temperature;
                 if (climate.temperature >= 0.5f) {
-                    event.getSpawns().getSpawner(EntityClassification.WATER_CREATURE).add(new MobSpawnInfo.Spawners(BettasEntities.BETTA_FISH, 30, 1, 2));
+                    event.getSpawns().getSpawner(EntityClassification.WATER_CREATURE).add(new MobSpawnInfo.Spawners(BettasEntities.BETTA_FISH.get(), 30, 1, 2));
                     event.getGeneration().getFeatures(GenerationStage.Decoration.SURFACE_STRUCTURES).add(() -> BettasFeatures.MOSS_BALL.get().withConfiguration(new FeatureSpreadConfig(5)).withPlacement(Features.Placements.SEAGRASS_DISK_PLACEMENT).chance(16));
                 }
                 break;
@@ -74,10 +72,11 @@ public class Bettas {
 
     private void registerCommon(FMLCommonSetupEvent event) {
         registerEntityAttributes();
+        EntitySpawnPlacementRegistry.register(BettasEntities.BETTA_FISH.get(), EntitySpawnPlacementRegistry.PlacementType.IN_WATER, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, AbstractFishEntity::func_223363_b);
     }
 
     private void registerEntityAttributes() {
-        GlobalEntityTypeAttributes.put(BettasEntities.BETTA_FISH, BettaFishEntity.func_234176_m_().create());
+        GlobalEntityTypeAttributes.put(BettasEntities.BETTA_FISH.get(), BettaFishEntity.func_234176_m_().create());
     }
 
     //Thanks to BlueDuck for the help with the loot table code :)

@@ -18,7 +18,7 @@ import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 public class ClientEventBusSubscriber {
     @SubscribeEvent
     public static void clientSetup(FMLClientSetupEvent event) {
-        RenderingRegistry.registerEntityRenderingHandler(BettasEntities.BETTA_FISH, BettaFishRenderer::new);
+        RenderingRegistry.registerEntityRenderingHandler(BettasEntities.BETTA_FISH.get(), BettaFishRenderer::new);
         RenderTypeLookup.setRenderLayer(BettasBlocks.DRIED_LEAVES.get(), RenderType.getCutout());
     }
 }
