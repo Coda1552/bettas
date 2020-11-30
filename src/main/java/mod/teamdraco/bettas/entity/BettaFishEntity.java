@@ -86,6 +86,14 @@ public class BettaFishEntity extends AbstractFishEntity {
         this.dataManager.set(VARIANT, variant);
     }
 
+    public boolean canDespawn(double distanceToClosestPlayer) {
+        return !this.isFromBucket() && !this.hasCustomName();
+    }
+
+    public boolean preventDespawn() {
+        return super.preventDespawn() || this.isFromBucket();
+    }
+
     @Override
     public void writeAdditional(CompoundNBT compound) {
         super.writeAdditional(compound);
