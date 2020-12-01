@@ -15,6 +15,7 @@ import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.*;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.IServerWorld;
@@ -113,9 +114,12 @@ public class BettaFishEntity extends AbstractFishEntity {
     public ILivingEntityData onInitialSpawn(IServerWorld worldIn, DifficultyInstance difficultyIn, SpawnReason reason, @Nullable ILivingEntityData spawnDataIn, @Nullable CompoundNBT dataTag) {
         if (dataTag == null) {
             if (this.rand.nextInt(3) == 0) {
-                setVariant(rand.nextInt(28));
-            } else {
+                setVariant(rand.nextInt(107));
+            }
+            else if (this.rand.nextInt(2) == 1) {
                 setVariant(24);
+            } else {
+                setVariant(100);
             }
         }
         else {
@@ -143,7 +147,15 @@ public class BettaFishEntity extends AbstractFishEntity {
 
     @Override
     protected SoundEvent getFlopSound() {
-        return SoundEvents.ENTITY_TROPICAL_FISH_FLOP;
+        return SoundEvents.ENTITY_COD_FLOP;
+    }
+
+    protected SoundEvent getDeathSound() {
+        return SoundEvents.ENTITY_COD_DEATH;
+    }
+
+    protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
+        return SoundEvents.ENTITY_COD_HURT;
     }
 
     static class SwimGoal extends RandomSwimmingGoal {
@@ -157,6 +169,11 @@ public class BettaFishEntity extends AbstractFishEntity {
         public boolean shouldExecute() {
             return this.fish.func_212800_dy() && super.shouldExecute();
         }
+    }
+
+    @Override
+    public ItemStack getPickedResult(RayTraceResult result) {
+        return new ItemStack(BettasItems.BETTA_FISH_SPAWN_EGG.get());
     }
 
     @Override

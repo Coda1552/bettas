@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "bettas:moss_ball_block"
+    }
+  ],
+  "result": {
+    "item": "bettas:moss_ball",
+    "count": 9
+  }
+}
