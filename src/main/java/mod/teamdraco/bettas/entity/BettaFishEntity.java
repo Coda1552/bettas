@@ -19,12 +19,13 @@ import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.IServerWorld;
-import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
 
 public class BettaFishEntity extends AbstractFishEntity {
+    public static final int MAX_VARIANTS = 108;
+
     private static final DataParameter<Integer> VARIANT = EntityDataManager.createKey(BettaFishEntity.class, DataSerializers.VARINT);
     private static final DataParameter<Boolean> FROM_BUCKET = EntityDataManager.createKey(BettaFishEntity.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Float> HEALTH = EntityDataManager.createKey(BettaFishEntity.class, DataSerializers.FLOAT);
@@ -113,14 +114,10 @@ public class BettaFishEntity extends AbstractFishEntity {
     @Override
     public ILivingEntityData onInitialSpawn(IServerWorld worldIn, DifficultyInstance difficultyIn, SpawnReason reason, @Nullable ILivingEntityData spawnDataIn, @Nullable CompoundNBT dataTag) {
         if (dataTag == null) {
-            if (this.rand.nextInt(3) == 0) {
-                setVariant(rand.nextInt(107));
-            }
-            else if (this.rand.nextInt(2) == 1) {
-                setVariant(24);
-            } else {
-                setVariant(100);
-            }
+            double chance = getRNG().nextDouble();
+            if (chance <= 0.33) setVariant(getRNG().nextInt(MAX_VARIANTS));
+            else if (chance <= 0.5) setVariant(24);
+            else setVariant(100);
         }
         else {
             if (dataTag.contains("BucketVariantTag", 3)) {
