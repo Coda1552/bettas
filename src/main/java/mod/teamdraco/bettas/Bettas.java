@@ -63,7 +63,7 @@ public class Bettas {
             case SWAMP:
                 float temperature = climate.temperature;
                 if (climate.temperature >= 0.5f) {
-                    event.getSpawns().getSpawner(EntityClassification.WATER_CREATURE).add(new MobSpawnInfo.Spawners(BettasEntities.BETTA_FISH.get(), 30, 1, 2));
+                    event.getSpawns().getSpawner(EntityClassification.WATER_AMBIENT).add(new MobSpawnInfo.Spawners(BettasEntities.BETTA_FISH.get(), 30, 1, 2));
                     event.getGeneration().getFeatures(GenerationStage.Decoration.SURFACE_STRUCTURES).add(() -> BettasFeatures.MOSS_BALL.get().withConfiguration(new FeatureSpreadConfig(5)).withPlacement(Features.Placements.SEAGRASS_DISK_PLACEMENT).chance(16));
                 }
                 break;

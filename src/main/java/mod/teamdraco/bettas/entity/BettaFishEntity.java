@@ -43,6 +43,7 @@ public class BettaFishEntity extends AbstractFishEntity {
     protected void registerGoals() {
         this.goalSelector.addGoal(0, new MeleeAttackGoal(this, 2.0D, true));
         this.goalSelector.addGoal(1, new SwimGoal(this));
+        this.targetSelector.addGoal(3, new HurtByTargetGoal(this));
     }
 
     private boolean isFromBucket() {
