@@ -15,6 +15,7 @@ import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.*;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.DifficultyInstance;
@@ -107,7 +108,7 @@ public class BettaFishEntity extends AbstractFishEntity {
     @Override
     public void readAdditional(CompoundNBT compound) {
         super.readAdditional(compound);
-        setVariant(compound.getInt("Variant"));
+        setVariant(MathHelper.clamp(compound.getInt("Variant"), 0, MAX_VARIANTS - 1));
         this.setFromBucket(compound.getBoolean("FromBucket"));
     }
 
