@@ -25,7 +25,7 @@ import net.minecraft.world.World;
 import javax.annotation.Nullable;
 
 public class BettaFishEntity extends AbstractFishEntity {
-    public static final int MAX_VARIANTS = 108;
+    public static final int MAX_VARIANTS = 120;
 
     private static final DataParameter<Integer> VARIANT = EntityDataManager.createKey(BettaFishEntity.class, DataSerializers.VARINT);
     private static final DataParameter<Boolean> FROM_BUCKET = EntityDataManager.createKey(BettaFishEntity.class, DataSerializers.BOOLEAN);
