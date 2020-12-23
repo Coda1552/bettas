@@ -1,6 +1,7 @@
 package mod.teamdraco.bettas.entity;
 
 import mod.teamdraco.bettas.init.BettasItems;
+import net.minecraft.block.Blocks;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.attributes.AttributeModifierMap;
 import net.minecraft.entity.ai.attributes.Attributes;
@@ -15,14 +16,17 @@ import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.*;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.IServerWorld;
+import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
+import java.util.Random;
 
 public class BettaFishEntity extends AbstractFishEntity {
     public static final int MAX_VARIANTS = 120;
@@ -112,13 +116,17 @@ public class BettaFishEntity extends AbstractFishEntity {
         this.setFromBucket(compound.getBoolean("FromBucket"));
     }
 
+    public static boolean canBettaSpawn(EntityType<? extends BettaFishEntity> type, IWorld worldIn, SpawnReason reason, BlockPos p_223363_3_, Random randomIn) {
+        return worldIn.getBlockState(p_223363_3_).isIn(Blocks.WATER) && worldIn.getBlockState(p_223363_3_.up()).isIn(Blocks.WATER) && randomIn.nextDouble() < 0.005;
+    }
+
     @Nullable
     @Override
     public ILivingEntityData onInitialSpawn(IServerWorld worldIn, DifficultyInstance difficultyIn, SpawnReason reason, @Nullable ILivingEntityData spawnDataIn, @Nullable CompoundNBT dataTag) {
         if (dataTag == null) {
             double chance = getRNG().nextDouble();
             if (chance <= 0.33) setVariant(getRNG().nextInt(MAX_VARIANTS));
-            else if (chance <= 0.5) setVariant(24);
+            else if (chance <= 0.7) setVariant(24);
             else setVariant(100);
         }
         else {

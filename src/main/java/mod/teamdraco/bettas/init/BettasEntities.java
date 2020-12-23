@@ -16,7 +16,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 public class BettasEntities {
     public static final DeferredRegister<EntityType<?>> ENTITIES = DeferredRegister.create(ForgeRegistries.ENTITIES, Bettas.MOD_ID);
 
-    public static final RegistryObject<EntityType<BettaFishEntity>> BETTA_FISH = ENTITIES.register("betta_fish", () -> EntityType.Builder.<BettaFishEntity>create(BettaFishEntity::new, EntityClassification.WATER_AMBIENT).size(0.3f, 0.3f).build(new ResourceLocation(Bettas.MOD_ID, "betta_fish").toString()));
+    public static final RegistryObject<EntityType<BettaFishEntity>> BETTA_FISH = ENTITIES.register("betta_fish", () -> EntityType.Builder.<BettaFishEntity>create(BettaFishEntity::new, EntityClassification.WATER_CREATURE).size(0.3f, 0.3f).build(new ResourceLocation(Bettas.MOD_ID, "betta_fish").toString()));
 
     public static void init(RegistryEvent.Register<EntityType<?>> event) {
     }

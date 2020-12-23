@@ -21,7 +21,7 @@ import java.util.Map;
 
 public class BettasSpawnEggItem extends SpawnEggItem {
 
-    protected static final List<BettasSpawnEggItem> UNADDED_EGGS = new ArrayList<BettasSpawnEggItem>();
+    public static final List<BettasSpawnEggItem> UNADDED_EGGS = new ArrayList<BettasSpawnEggItem>();
     private final Lazy<? extends EntityType<?>> entityTypeSupplier;
 
     public BettasSpawnEggItem(final NonNullSupplier<? extends EntityType<?>> entityTypeSupplier, final int primaryColour, final int secondaryColour, final Item.Properties properties) {
