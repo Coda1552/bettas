@@ -73,7 +73,7 @@ public class Bettas {
 
     private void registerCommon(FMLCommonSetupEvent event) {
         registerEntityAttributes();
-        EntitySpawnPlacementRegistry.register(BettasEntities.BETTA_FISH.get(), EntitySpawnPlacementRegistry.PlacementType.IN_WATER, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, AbstractFishEntity::func_223363_b);
+        EntitySpawnPlacementRegistry.register(BettasEntities.BETTA_FISH.get(), EntitySpawnPlacementRegistry.PlacementType.IN_WATER, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, BettaFishEntity::func_223363_b);
     }
 
     private void registerEntityAttributes() {
