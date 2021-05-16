@@ -119,7 +119,7 @@ public class BettaFishEntity extends AbstractFishEntity {
         setVariant(MathHelper.clamp(compound.getInt("Variant"), 0, MAX_VARIANTS - 1));
         this.setFromBucket(compound.getBoolean("FromBucket"));
     }
-    
+
     @Nullable
     @Override
     public ILivingEntityData onInitialSpawn(IServerWorld worldIn, DifficultyInstance difficultyIn, SpawnReason reason, @Nullable ILivingEntityData spawnDataIn, @Nullable CompoundNBT dataTag) {
