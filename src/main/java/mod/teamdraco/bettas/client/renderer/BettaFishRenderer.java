@@ -22,7 +22,7 @@ public class BettaFishRenderer extends MobRenderer<BettaFishEntity, BettaFishMod
     }
 
     @Override
-    public ResourceLocation getEntityTexture(BettaFishEntity entity) {
+    public ResourceLocation getTextureLocation(BettaFishEntity entity) {
         int variant = entity.getVariant();
         if (TEXTURES[variant] == null)
         {
@@ -40,13 +40,13 @@ public class BettaFishRenderer extends MobRenderer<BettaFishEntity, BettaFishMod
     }
 
     @Override
-    protected void applyRotations(BettaFishEntity entityLiving, MatrixStack matrixStackIn, float ageInTicks, float rotationYaw, float partialTicks) {
-        super.applyRotations(entityLiving, matrixStackIn, ageInTicks, rotationYaw, partialTicks);
+    protected void setupRotations(BettaFishEntity entityLiving, MatrixStack matrixStackIn, float ageInTicks, float rotationYaw, float partialTicks) {
+        super.setupRotations(entityLiving, matrixStackIn, ageInTicks, rotationYaw, partialTicks);
         float f = 4.3F * MathHelper.sin(0.6F * ageInTicks);
-        matrixStackIn.rotate(Vector3f.YP.rotationDegrees(f));
+        matrixStackIn.mulPose(Vector3f.YP.rotationDegrees(f));
         if (!entityLiving.isInWater()) {
             matrixStackIn.translate(0.2d, 0.1d, 0);
-            matrixStackIn.rotate(Vector3f.ZP.rotationDegrees(90.0F));
+            matrixStackIn.mulPose(Vector3f.ZP.rotationDegrees(90.0F));
         }
     }
 }

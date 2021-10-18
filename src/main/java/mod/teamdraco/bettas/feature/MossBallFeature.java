@@ -19,18 +19,18 @@ public class MossBallFeature extends Feature<FeatureSpreadConfig> {
         super(p_i231987_1_);
     }
 
-    public boolean generate(ISeedReader reader, ChunkGenerator generator, Random rand, BlockPos pos, FeatureSpreadConfig config) {
+    public boolean place(ISeedReader reader, ChunkGenerator generator, Random rand, BlockPos pos, FeatureSpreadConfig config) {
         int i = 0;
-        int j = config.func_242799_a().func_242259_a(rand);
+        int j = config.count().sample(rand);
 
         for(int k = 0; k < j; ++k) {
             int l = rand.nextInt(8) - rand.nextInt(8);
             int i1 = rand.nextInt(8) - rand.nextInt(8);
             int j1 = reader.getHeight(Heightmap.Type.OCEAN_FLOOR, pos.getX() + l, pos.getZ() + i1);
             BlockPos blockpos = new BlockPos(pos.getX() + l, j1, pos.getZ() + i1);
-            BlockState blockstate = BettasBlocks.MOSS_BALL.get().getDefaultState().with(SeaPickleBlock.PICKLES, Integer.valueOf(rand.nextInt(4) + 1));
-            if (reader.getBlockState(blockpos).isIn(Blocks.WATER) && blockstate.isValidPosition(reader, blockpos)) {
-                reader.setBlockState(blockpos, blockstate, 2);
+            BlockState blockstate = BettasBlocks.MOSS_BALL.get().defaultBlockState().setValue(SeaPickleBlock.PICKLES, Integer.valueOf(rand.nextInt(4) + 1));
+            if (reader.getBlockState(blockpos).is(Blocks.WATER) && blockstate.canSurvive(reader, blockpos)) {
+                reader.setBlock(blockpos, blockstate, 2);
                 ++i;
             }
         }

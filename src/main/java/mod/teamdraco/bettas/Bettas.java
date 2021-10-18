@@ -62,22 +62,18 @@ public class Bettas {
         Biome.Climate climate = event.getClimate();
         switch (event.getCategory()) {
             case SWAMP:
-                float temperature = climate.temperature;
-                if (climate.temperature >= 0.5f) {
-                    event.getSpawns().getSpawner(EntityClassification.WATER_CREATURE).add(new MobSpawnInfo.Spawners(BettasEntities.BETTA_FISH.get(), 1, 1, 2));
-                    event.getGeneration().getFeatures(GenerationStage.Decoration.SURFACE_STRUCTURES).add(() -> BettasFeatures.MOSS_BALL.get().withConfiguration(new FeatureSpreadConfig(5)).withPlacement(Features.Placements.SEAGRASS_DISK_PLACEMENT).chance(16));
-                }
+                event.getSpawns().getSpawner(EntityClassification.WATER_CREATURE).add(new MobSpawnInfo.Spawners(BettasEntities.BETTA_FISH.get(), 1, 1, 2));event.getGeneration().getFeatures(GenerationStage.Decoration.SURFACE_STRUCTURES).add(() -> BettasFeatures.MOSS_BALL.get().configured(new FeatureSpreadConfig(5)).decorated(Features.Placements.TOP_SOLID_HEIGHTMAP_SQUARE).chance(16));
                 break;
         }
     }
 
     private void registerCommon(FMLCommonSetupEvent event) {
         registerEntityAttributes();
-        EntitySpawnPlacementRegistry.register(BettasEntities.BETTA_FISH.get(), EntitySpawnPlacementRegistry.PlacementType.IN_WATER, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, BettaFishEntity::func_223363_b);
+        EntitySpawnPlacementRegistry.register(BettasEntities.BETTA_FISH.get(), EntitySpawnPlacementRegistry.PlacementType.IN_WATER, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, BettaFishEntity::checkFishSpawnRules);
     }
 
     private void registerEntityAttributes() {
-        GlobalEntityTypeAttributes.put(BettasEntities.BETTA_FISH.get(), BettaFishEntity.func_234176_m_().create());
+        GlobalEntityTypeAttributes.put(BettasEntities.BETTA_FISH.get(), BettaFishEntity.createAttributes().build());
     }
 
     //Thanks to BlueDuck for the help with the loot table code :)
@@ -86,7 +82,7 @@ public class Bettas {
         @SubscribeEvent
         public static void onLootLoad(LootTableLoadEvent event) throws IllegalAccessException {
             ResourceLocation name = event.getName();
-            if (name.equals(LootTables.GAMEPLAY_FISHING)) {
+            if (name.equals(LootTables.FISHING)) {
                 LootPool pool = event.getTable().getPool("main");
                 if (pool != null) {
                     addEntry(pool, getInjectEntry(new ResourceLocation("bettas:inject/fishing"), 10, 1));
@@ -96,11 +92,11 @@ public class Bettas {
     }
 
     private static LootEntry getInjectEntry(ResourceLocation location, int weight, int quality) {
-        return TableLootEntry.builder(location).weight(weight).quality(quality).build();
+        return TableLootEntry.lootTableReference(location).setWeight(weight).setQuality(quality).build();
     }
 
     private static void addEntry(LootPool pool, LootEntry entry) throws IllegalAccessException {
-        List<LootEntry> lootEntries = (List<LootEntry>) ObfuscationReflectionHelper.findField(LootPool.class, "field_186453_a").get(pool);
+        List<LootEntry> lootEntries = (List<LootEntry>) ObfuscationReflectionHelper.findField(LootPool.class, "entries").get(pool);
         if (lootEntries.stream().anyMatch(e -> e == entry)) {
             throw new RuntimeException("Attempted to add a duplicate entry to pool: " + entry);
         }
