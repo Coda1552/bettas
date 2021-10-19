@@ -59,10 +59,9 @@ public class Bettas {
 
     @SubscribeEvent(priority = EventPriority.LOWEST)
     public static void registerBiomes(BiomeLoadingEvent event) {
-        switch (event.getCategory()) {
-            case SWAMP:
-                event.getSpawns().getSpawner(EntityClassification.WATER_CREATURE).add(new MobSpawnInfo.Spawners(BettasEntities.BETTA_FISH.get(), 1, 1, 2));event.getGeneration().getFeatures(GenerationStage.Decoration.SURFACE_STRUCTURES).add(() -> BettasFeatures.MOSS_BALL.get().configured(new FeatureSpreadConfig(5)).decorated(Features.Placements.TOP_SOLID_HEIGHTMAP_SQUARE).chance(16));
-                break;
+        if (event.getCategory() == Biome.Category.SWAMP) {
+            event.getSpawns().getSpawner(EntityClassification.WATER_CREATURE).add(new MobSpawnInfo.Spawners(BettasEntities.BETTA_FISH.get(), 1, 1, 2));
+            event.getGeneration().getFeatures(GenerationStage.Decoration.SURFACE_STRUCTURES).add(() -> BettasFeatures.MOSS_BALL.get().configured(new FeatureSpreadConfig(5)).decorated(Features.Placements.TOP_SOLID_HEIGHTMAP_SQUARE).chance(16));
         }
     }
 
