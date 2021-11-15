@@ -1,29 +1,30 @@
-package mod.teamdraco.bettas.block;
+package teamdraco.bettas.block;
 
-import mod.teamdraco.bettas.init.BettasBlocks;
-import net.minecraft.block.*;
-import net.minecraft.fluid.FluidState;
-import net.minecraft.fluid.Fluids;
-import net.minecraft.item.BlockItemUseContext;
-import net.minecraft.state.BooleanProperty;
-import net.minecraft.state.IntegerProperty;
-import net.minecraft.state.StateContainer;
-import net.minecraft.state.properties.BlockStateProperties;
-import net.minecraft.tags.BlockTags;
-import net.minecraft.util.Direction;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.shapes.ISelectionContext;
-import net.minecraft.util.math.shapes.VoxelShape;
-import net.minecraft.world.IBlockReader;
-import net.minecraft.world.IWorld;
-import net.minecraft.world.IWorldReader;
-import net.minecraft.world.World;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.block.*;
+import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import net.minecraft.world.level.block.state.properties.IntegerProperty;
+import net.minecraft.world.level.material.FluidState;
+import net.minecraft.world.level.material.Fluids;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.VoxelShape;
+import teamdraco.bettas.init.BettasBlocks;
 
 import javax.annotation.Nullable;
 import java.util.Random;
 
-public class MossBallBlock extends BushBlock implements IWaterLoggable, IGrowable {
+public class MossBallBlock extends BushBlock implements SimpleWaterloggedBlock, BonemealableBlock {
     public static final IntegerProperty BALLS = BlockStateProperties.PICKLES;
     public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
     protected static final VoxelShape ONE_SHAPE = Block.box(0, 0, 0, 16, 7, 16);
@@ -31,13 +32,13 @@ public class MossBallBlock extends BushBlock implements IWaterLoggable, IGrowabl
     protected static final VoxelShape THREE_SHAPE = Block.box(0, 0, 0, 16, 7, 16);
     protected static final VoxelShape FOUR_SHAPE = Block.box(0, 0, 0, 16, 8, 16);
 
-    public MossBallBlock(AbstractBlock.Properties properties) {
+    public MossBallBlock(BlockBehaviour.Properties properties) {
         super(properties);
         this.registerDefaultState(this.stateDefinition.any().setValue(BALLS, Integer.valueOf(1)).setValue(WATERLOGGED, Boolean.valueOf(true)));
     }
 
     @Nullable
-    public BlockState getStateForPlacement(BlockItemUseContext context) {
+    public BlockState getStateForPlacement(BlockPlaceContext context) {
         BlockState blockstate = context.getLevel().getBlockState(context.getClickedPos());
         if (blockstate.is(this)) {
             return blockstate.setValue(BALLS, Integer.valueOf(Math.min(4, blockstate.getValue(BALLS) + 1)));
@@ -52,16 +53,16 @@ public class MossBallBlock extends BushBlock implements IWaterLoggable, IGrowabl
         return !p_204901_0_.getValue(WATERLOGGED);
     }
 
-    protected boolean mayPlaceOn(BlockState state, IBlockReader worldIn, BlockPos pos) {
+    protected boolean mayPlaceOn(BlockState state, LevelReader worldIn, BlockPos pos) {
         return !state.getCollisionShape(worldIn, pos).getFaceShape(Direction.UP).isEmpty() || state.isFaceSturdy(worldIn, pos, Direction.UP);
     }
 
-    public boolean canSurvive(BlockState state, IWorldReader worldIn, BlockPos pos) {
+    public boolean canSurvive(BlockState state, LevelReader worldIn, BlockPos pos) {
         BlockPos blockpos = pos.below();
         return this.mayPlaceOn(worldIn.getBlockState(blockpos), worldIn, blockpos);
     }
 
-    public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, IWorld worldIn, BlockPos currentPos, BlockPos facingPos) {
+    public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, LevelAccessor worldIn, BlockPos currentPos, BlockPos facingPos) {
         if (!stateIn.canSurvive(worldIn, currentPos)) {
             return Blocks.AIR.defaultBlockState();
         } else {
@@ -73,11 +74,11 @@ public class MossBallBlock extends BushBlock implements IWaterLoggable, IGrowabl
         }
     }
 
-    public boolean canBeReplaced(BlockState state, BlockItemUseContext useContext) {
-        return useContext.getItemInHand().getItem() == this.asItem() && state.getValue(BALLS) < 4 ? true : super.canBeReplaced(state, useContext);
+    public boolean canBeReplaced(BlockState state, BlockPlaceContext useContext) {
+        return useContext.getItemInHand().getItem() == this.asItem() && state.getValue(BALLS) < 4 || super.canBeReplaced(state, useContext);
     }
 
-    public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
+    public VoxelShape getShape(BlockState state, BlockGetter worldIn, BlockPos pos, CollisionContext context) {
         switch (state.getValue(BALLS)) {
             case 1:
             default:
@@ -95,19 +96,19 @@ public class MossBallBlock extends BushBlock implements IWaterLoggable, IGrowabl
         return state.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : super.getFluidState(state);
     }
 
-    protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder) {
+    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
         builder.add(BALLS, WATERLOGGED);
     }
 
-    public boolean isValidBonemealTarget(IBlockReader worldIn, BlockPos pos, BlockState state, boolean isClient) {
+    public boolean isValidBonemealTarget(BlockGetter worldIn, BlockPos pos, BlockState state, boolean isClient) {
         return true;
     }
 
-    public boolean isBonemealSuccess(World worldIn, Random rand, BlockPos pos, BlockState state) {
+    public boolean isBonemealSuccess(Level worldIn, Random rand, BlockPos pos, BlockState state) {
         return true;
     }
 
-    public void performBonemeal(ServerWorld worldIn, Random rand, BlockPos pos, BlockState state) {
+    public void performBonemeal(ServerLevel worldIn, Random rand, BlockPos pos, BlockState state) {
         if (!isInBadEnvironment(state) && worldIn.getBlockState(pos.below()).getBlock() == BettasBlocks.MOSS_BALL_BLOCK.get()) {
             int i = 5;
             int j = 1;

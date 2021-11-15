@@ -1,47 +1,59 @@
-package mod.teamdraco.bettas.entity;
+package teamdraco.bettas.entity;
 
-import mod.teamdraco.bettas.init.BettasBlocks;
-import mod.teamdraco.bettas.init.BettasItems;
-import net.minecraft.block.Blocks;
-import net.minecraft.entity.*;
-import net.minecraft.entity.ai.attributes.AttributeModifierMap;
-import net.minecraft.entity.ai.attributes.Attributes;
-import net.minecraft.entity.ai.goal.*;
-import net.minecraft.entity.passive.fish.AbstractFishEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.projectile.AbstractArrowEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.network.datasync.DataParameter;
-import net.minecraft.network.datasync.DataSerializers;
-import net.minecraft.network.datasync.EntityDataManager;
-import net.minecraft.particles.ParticleTypes;
-import net.minecraft.util.*;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.util.Mth;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.MobSpawnType;
+import net.minecraft.world.entity.SpawnGroupData;
+import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
+import net.minecraft.world.entity.ai.goal.RandomSwimmingGoal;
+import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
+import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
+import net.minecraft.world.entity.animal.AbstractFish;
+import net.minecraft.world.entity.animal.Bucketable;
+import net.minecraft.world.entity.monster.Monster;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.projectile.AbstractArrow;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.ServerLevelAccessor;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.phys.HitResult;
+import net.minecraft.world.phys.Vec3;
+import teamdraco.bettas.init.BettasBlocks;
+import teamdraco.bettas.init.BettasItems;
 import net.minecraft.world.DifficultyInstance;
-import net.minecraft.world.IServerWorld;
-import net.minecraft.world.IWorld;
-import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
 import java.util.Random;
 
-public class BettaFishEntity extends AbstractFishEntity {
+public class BettaFishEntity extends AbstractFish implements Bucketable {
     public static final int MAX_VARIANTS = 120;
-    private static final DataParameter<Integer> VARIANT = EntityDataManager.defineId(BettaFishEntity.class, DataSerializers.INT);
-    private static final DataParameter<Boolean> FROM_BUCKET = EntityDataManager.defineId(BettaFishEntity.class, DataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Integer> VARIANT = SynchedEntityData.defineId(BettaFishEntity.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Boolean> FROM_BUCKET = SynchedEntityData.defineId(BettaFishEntity.class, EntityDataSerializers.BOOLEAN);
 
-    public BettaFishEntity(EntityType<? extends BettaFishEntity> type, World worldIn) {
+    public BettaFishEntity(EntityType<? extends BettaFishEntity> type, Level worldIn) {
         super(type, worldIn);
     }
 
     protected void registerGoals() {
         this.goalSelector.addGoal(0, new MeleeAttackGoal(this, 2.0D, true));
-        this.goalSelector.addGoal(1, new SwimGoal(this));
-        this.targetSelector.addGoal(3, new HurtByTargetGoal(this));
+        this.goalSelector.addGoal(1, new RandomSwimmingGoal(this, 1.0D, 20));
+        this.targetSelector.addGoal(0, new HurtByTargetGoal(this, BettaFishEntity.class));
     }
 
     private boolean isFromBucket() {
@@ -59,11 +71,11 @@ public class BettaFishEntity extends AbstractFishEntity {
         this.entityData.define(FROM_BUCKET, false);
     }
 
-    public static AttributeModifierMap.MutableAttribute createAttributes() {
-        return MobEntity.createMobAttributes().add(Attributes.MAX_HEALTH, 6.0D).add(Attributes.ATTACK_DAMAGE, 1.0D);
+    public static AttributeSupplier.Builder createAttributes() {
+        return Monster.createMobAttributes().add(Attributes.MAX_HEALTH, 6.0D).add(Attributes.ATTACK_DAMAGE, 1.0D);
     }
 
-    public static boolean checkFishSpawnRules(EntityType<? extends AbstractFishEntity> type, IWorld worldIn, SpawnReason reason, BlockPos p_223363_3_, Random randomIn) {
+    public static boolean checkBettaFishSpawnRules(EntityType<? extends AbstractFish> type, BlockGetter worldIn, MobSpawnType reason, BlockPos p_223363_3_, Random randomIn) {
         return worldIn.getBlockState(p_223363_3_).is(Blocks.WATER) && worldIn.getBlockState(p_223363_3_.above()).is(Blocks.WATER) && randomIn.nextFloat() > 0.9;
     }
 
@@ -72,7 +84,7 @@ public class BettaFishEntity extends AbstractFishEntity {
             return false;
         } else {
             Entity entity = source.getEntity();
-            if (entity != null && !(entity instanceof PlayerEntity) && !(entity instanceof AbstractArrowEntity)) {
+            if (entity != null && !(entity instanceof Player) && !(entity instanceof AbstractArrow)) {
                 amount = (amount + 1.0F) / 2.0F;
             }
 
@@ -81,7 +93,7 @@ public class BettaFishEntity extends AbstractFishEntity {
     }
 
     public boolean doHurtTarget(Entity entityIn) {
-        boolean flag = entityIn.hurt(DamageSource.mobAttack(this), (float)((int)this.getAttributeValue(Attributes.ATTACK_DAMAGE)));
+        boolean flag = entityIn.hurt(DamageSource.mobAttack(this), (float) ((int) this.getAttributeValue(Attributes.ATTACK_DAMAGE)));
         if (flag) {
             this.doEnchantDamageEffects(this, entityIn);
         }
@@ -116,12 +128,12 @@ public class BettaFishEntity extends AbstractFishEntity {
 
     private boolean isMossBallNearby() {
         BlockPos blockpos = this.blockPosition();
-        BlockPos.Mutable blockpos$mutable = new BlockPos.Mutable();
+        BlockPos.MutableBlockPos blockpos$mutable = new BlockPos.MutableBlockPos();
 
-        for(int i = 0; i < 8; ++i) {
-            for(int j = 0; j < 8; ++j) {
-                for(int k = 0; k <= j; k = k > 0 ? -k : 1 - k) {
-                    for(int l = k < j && k > -j ? j : 0; l <= j; l = l > 0 ? -l : 1 - l) {
+        for (int i = 0; i < 8; ++i) {
+            for (int j = 0; j < 8; ++j) {
+                for (int k = 0; k <= j; k = k > 0 ? -k : 1 - k) {
+                    for (int l = k < j && k > -j ? j : 0; l <= j; l = l > 0 ? -l : 1 - l) {
                         blockpos$mutable.setWithOffset(blockpos, k, i, l);
                         if (this.level.getBlockState(blockpos$mutable).is(BettasBlocks.MOSS_BALL_BLOCK.get())) {
                             return true;
@@ -135,29 +147,28 @@ public class BettaFishEntity extends AbstractFishEntity {
     }
 
     @Override
-    public void addAdditionalSaveData(CompoundNBT compound) {
+    public void addAdditionalSaveData(CompoundTag compound) {
         super.addAdditionalSaveData(compound);
         compound.putInt("Variant", getVariant());
         compound.putBoolean("FromBucket", this.isFromBucket());
     }
 
     @Override
-    public void readAdditionalSaveData(CompoundNBT compound) {
+    public void readAdditionalSaveData(CompoundTag compound) {
         super.readAdditionalSaveData(compound);
-        setVariant(MathHelper.clamp(compound.getInt("Variant"), 0, MAX_VARIANTS - 1));
+        setVariant(Mth.clamp(compound.getInt("Variant"), 0, MAX_VARIANTS - 1));
         this.setFromBucket(compound.getBoolean("FromBucket"));
     }
 
     @Nullable
     @Override
-    public ILivingEntityData finalizeSpawn(IServerWorld worldIn, DifficultyInstance difficultyIn, SpawnReason reason, @Nullable ILivingEntityData spawnDataIn, @Nullable CompoundNBT dataTag) {
+    public SpawnGroupData finalizeSpawn(ServerLevelAccessor worldIn, DifficultyInstance difficultyIn, MobSpawnType reason, @Nullable SpawnGroupData spawnDataIn, @Nullable CompoundTag dataTag) {
         if (dataTag == null) {
             double chance = getRandom().nextDouble();
             if (chance <= 0.45) setVariant(getRandom().nextInt(MAX_VARIANTS));
             else if (chance <= 0.7) setVariant(24);
             else setVariant(100);
-        }
-        else {
+        } else {
             if (dataTag.contains("Variant", 3)) {
                 this.setVariant(dataTag.getInt("Variant"));
                 this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, BettaFishEntity.class, false));
@@ -169,14 +180,14 @@ public class BettaFishEntity extends AbstractFishEntity {
         return super.finalizeSpawn(worldIn, difficultyIn, reason, spawnDataIn, dataTag);
     }
 
-    protected void saveToBucketTag(ItemStack bucket) {
-        CompoundNBT compoundnbt = bucket.getOrCreateTag();
+    public void saveToBucketTag(ItemStack bucket) {
+        CompoundTag compoundnbt = bucket.getOrCreateTag();
         compoundnbt.putInt("Variant", this.getVariant());
         compoundnbt.putFloat("Health", this.getHealth());
     }
 
     @Override
-    protected ItemStack getBucketItemStack() {
+    public ItemStack getBucketItemStack() {
         return new ItemStack(BettasItems.BETTA_FISH_BUCKET.get());
     }
 
@@ -194,12 +205,12 @@ public class BettaFishEntity extends AbstractFishEntity {
     }
 
     @Override
-    public ItemStack getPickedResult(RayTraceResult result) {
+    public ItemStack getPickedResult(HitResult result) {
         return new ItemStack(BettasItems.BETTA_FISH_SPAWN_EGG.get());
     }
 
     @Override
-    public ActionResultType interactAt(PlayerEntity player, Vector3d vec, Hand hand) {
+    public InteractionResult interactAt(Player player, Vec3 vec, InteractionHand hand) {
         ItemStack stack = player.getItemInHand(hand);
         float maxHealth = this.getMaxHealth();
         float health = this.getHealth();
@@ -212,21 +223,8 @@ public class BettaFishEntity extends AbstractFishEntity {
             double d1 = this.random.nextGaussian() * 0.02D;
             double d2 = this.random.nextGaussian() * 0.02D;
             this.level.addParticle(ParticleTypes.HEART, this.getRandomX(1.0D), this.getRandomY() + 0.5D, this.getRandomZ(1.0D), d0, d1, d2);
-            return ActionResultType.PASS;
+            return InteractionResult.PASS;
         }
         return super.interactAt(player, vec, hand);
-    }
-
-    static class SwimGoal extends RandomSwimmingGoal {
-        private final BettaFishEntity fish;
-
-        public SwimGoal(BettaFishEntity fish) {
-            super(fish, 1.0D, 40);
-            this.fish = fish;
-        }
-
-        public boolean canUse() {
-            return this.fish.canRandomSwim() && super.canUse();
-        }
     }
 }
