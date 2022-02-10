@@ -1,0 +1,12 @@
+{
+  "entity.bettas.betta_fish": "Peixe-beta",
+
+  "item.bettas.betta_fish": "Peixe-beta",
+  "item.bettas.betta_fish_bucket": "Balde com peixe-beta",
+  "item.bettas.betta_fish_spawn_egg": "Ovo gerador de peixe-beta",
+  "item.bettas.blackwater_bottle": "Frasco de água preta",
+
+  "block.bettas.moss_ball": "Bola de musgo",
+  "block.bettas.moss_ball_block": "Bloco de bolas de musgo",
+  "block.bettas.dried_leaves": "Folhas secas"
+}
