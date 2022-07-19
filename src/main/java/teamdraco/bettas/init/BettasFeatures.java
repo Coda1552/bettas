@@ -2,7 +2,7 @@ package teamdraco.bettas.init;
 
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.configurations.CountConfiguration;
-import net.minecraftforge.fmllegacy.RegistryObject;
+import net.minecraftforge.registries.RegistryObject;
 import teamdraco.bettas.Bettas;
 import teamdraco.bettas.feature.MossBallFeature;
 import net.minecraftforge.registries.DeferredRegister;

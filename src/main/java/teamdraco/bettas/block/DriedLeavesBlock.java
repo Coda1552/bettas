@@ -66,7 +66,7 @@ public class DriedLeavesBlock extends BushBlock implements SimpleWaterloggedBloc
             return Blocks.AIR.defaultBlockState();
         } else {
             if (stateIn.getValue(WATERLOGGED)) {
-                worldIn.getLiquidTicks().scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickDelay(worldIn));
+                worldIn.m_183324_().m_183588_(currentPos, Fluids.WATER);
             }
 
             return super.updateShape(stateIn, facing, facingState, worldIn, currentPos, facingPos);

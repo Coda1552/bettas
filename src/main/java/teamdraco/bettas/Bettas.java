@@ -1,15 +1,12 @@
 package teamdraco.bettas;
 
-import net.minecraft.data.worldgen.Features;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.entity.SpawnPlacements;
-import net.minecraft.world.level.SpawnData;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.MobSpawnSettings;
 import net.minecraft.world.level.levelgen.GenerationStep;
 import net.minecraft.world.level.levelgen.Heightmap;
-import net.minecraft.world.level.levelgen.feature.configurations.CountConfiguration;
 import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.entries.LootPoolEntryContainer;
 import net.minecraft.world.level.storage.loot.entries.LootTableReference;
@@ -56,7 +53,7 @@ public class Bettas {
     public static void registerBiomes(BiomeLoadingEvent event) {
         if (event.getCategory() == Biome.BiomeCategory.SWAMP) {
             event.getSpawns().getSpawner(MobCategory.WATER_CREATURE).add(new MobSpawnSettings.SpawnerData(BettasEntities.BETTA_FISH.get(), 1, 1, 2));
-            event.getGeneration().getFeatures(GenerationStep.Decoration.SURFACE_STRUCTURES).add(() -> BettasFeatures.MOSS_BALL.get().configured(new CountConfiguration(5)).decorated(Features.Decorators.TOP_SOLID_HEIGHTMAP_SQUARE).count(1));
+
         }
     }
 

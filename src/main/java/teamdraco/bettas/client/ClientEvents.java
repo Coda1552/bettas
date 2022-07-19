@@ -10,7 +10,6 @@ import teamdraco.bettas.client.model.BettaFishModel;
 import teamdraco.bettas.client.renderer.BettaFishRenderer;
 import teamdraco.bettas.init.BettasBlocks;
 import teamdraco.bettas.init.BettasEntities;
-import teamdraco.bettas.item.BettasSpawnEggItem;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -29,13 +28,5 @@ public class ClientEvents {
         ItemBlockRenderTypes.setRenderLayer(BettasBlocks.DRIED_LEAVES.get(), RenderType.cutout());
 
         ForgeHooksClient.registerLayerDefinition(BettaFishRenderer.MODEL_LAYER, BettaFishModel::createLayerDefinition);
-
-    }
-
-    @SubscribeEvent
-    public static void itemColors(ColorHandlerEvent.Item event) {
-        ItemColors handler = event.getItemColors();
-        ItemColor eggColor = (stack, tintIndex) -> ((BettasSpawnEggItem) stack.getItem()).getColor(tintIndex);
-        for (BettasSpawnEggItem e : BettasSpawnEggItem.UNADDED_EGGS) handler.register(eggColor, e);
     }
 }

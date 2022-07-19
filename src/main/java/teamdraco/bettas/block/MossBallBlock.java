@@ -34,18 +34,18 @@ public class MossBallBlock extends BushBlock implements SimpleWaterloggedBlock, 
 
     public MossBallBlock(BlockBehaviour.Properties properties) {
         super(properties);
-        this.registerDefaultState(this.stateDefinition.any().setValue(BALLS, Integer.valueOf(1)).setValue(WATERLOGGED, Boolean.valueOf(true)));
+        this.registerDefaultState(this.stateDefinition.any().setValue(BALLS, 1).setValue(WATERLOGGED, Boolean.TRUE));
     }
 
     @Nullable
     public BlockState getStateForPlacement(BlockPlaceContext context) {
         BlockState blockstate = context.getLevel().getBlockState(context.getClickedPos());
         if (blockstate.is(this)) {
-            return blockstate.setValue(BALLS, Integer.valueOf(Math.min(4, blockstate.getValue(BALLS) + 1)));
+            return blockstate.setValue(BALLS, Math.min(4, blockstate.getValue(BALLS) + 1));
         } else {
             FluidState fluidstate = context.getLevel().getFluidState(context.getClickedPos());
             boolean flag = fluidstate.getType() == Fluids.WATER;
-            return super.getStateForPlacement(context).setValue(WATERLOGGED, Boolean.valueOf(flag));
+            return super.getStateForPlacement(context).setValue(WATERLOGGED, flag);
         }
     }
 
@@ -67,7 +67,7 @@ public class MossBallBlock extends BushBlock implements SimpleWaterloggedBlock, 
             return Blocks.AIR.defaultBlockState();
         } else {
             if (stateIn.getValue(WATERLOGGED)) {
-                worldIn.getLiquidTicks().scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickDelay(worldIn));
+                worldIn.m_183324_().m_183588_(currentPos, Fluids.WATER);
             }
 
             return super.updateShape(stateIn, facing, facingState, worldIn, currentPos, facingPos);
