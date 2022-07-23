@@ -38,7 +38,8 @@ public class BettaFishModel<T extends Entity> extends EntityModel<T> {
     }
 
     //Layer Definition
-    public static LayerDefinition createLayerDefinition() {
+    @SuppressWarnings("unused")
+	public static LayerDefinition createLayerDefinition() {
         MeshDefinition meshdefinition = new MeshDefinition();
         PartDefinition root = meshdefinition.getRoot();
         PartDefinition body = root.addOrReplaceChild("body", CubeListBuilder.create().texOffs(0, 0).addBox(-1.0F, -1.5F, -3.5F, 2.0F, 3.0F, 7.0F, false), PartPose.offsetAndRotation(0.0F, 22.5F, -0.5F, 0.0F, 0.0F, 0.0F));

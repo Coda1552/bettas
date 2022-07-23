@@ -66,14 +66,15 @@ public class DriedLeavesBlock extends BushBlock implements SimpleWaterloggedBloc
             return Blocks.AIR.defaultBlockState();
         } else {
             if (stateIn.getValue(WATERLOGGED)) {
-                worldIn.m_183324_().m_183588_(currentPos, Fluids.WATER);
+            	worldIn.scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickDelay(worldIn));
             }
 
             return super.updateShape(stateIn, facing, facingState, worldIn, currentPos, facingPos);
         }
     }
 
-    public boolean canBeReplaced(BlockState state, BlockPlaceContext useContext) {
+    @SuppressWarnings("deprecation")
+	public boolean canBeReplaced(BlockState state, BlockPlaceContext useContext) {
         return useContext.getItemInHand().getItem() == this.asItem() && state.getValue(LEAVES) < 3 || super.canBeReplaced(state, useContext);
     }
 
@@ -89,7 +90,8 @@ public class DriedLeavesBlock extends BushBlock implements SimpleWaterloggedBloc
         }
     }
 
-    public FluidState getFluidState(BlockState state) {
+    @SuppressWarnings("deprecation")
+	public FluidState getFluidState(BlockState state) {
         return state.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : super.getFluidState(state);
     }
 

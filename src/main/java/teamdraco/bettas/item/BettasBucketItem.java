@@ -37,7 +37,8 @@ import java.util.function.Supplier;
 public class BettasBucketItem extends BucketItem {
     private final boolean hasTooltip;
     private final Supplier<? extends Fluid> fluid;
-    private final Item item;
+    @SuppressWarnings("unused")
+	private final Item item;
 
     public BettasBucketItem(Supplier<? extends EntityType<?>> entityType, Supplier<? extends Fluid> fluid, Item item, boolean hasTooltip, Properties builder) {
         super(fluid, builder);
@@ -47,7 +48,8 @@ public class BettasBucketItem extends BucketItem {
         this.item = item;
     }
 
-    @Override
+    @SuppressWarnings("static-access")
+	@Override
     public InteractionResultHolder<ItemStack> use(Level worldIn, Player playerIn, InteractionHand handIn) {
         ItemStack itemstack = playerIn.getItemInHand(handIn);
         BlockHitResult raytraceresult = getPlayerPOVHitResult(worldIn, playerIn, ClipContext.Fluid.NONE);
