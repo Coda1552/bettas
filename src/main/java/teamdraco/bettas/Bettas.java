@@ -1,5 +1,7 @@
 package teamdraco.bettas;
 
+import java.util.List;
+
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.entity.SpawnPlacements;
@@ -12,6 +14,7 @@ import net.minecraft.world.level.storage.loot.entries.LootPoolEntryContainer;
 import net.minecraft.world.level.storage.loot.entries.LootTableReference;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.world.BiomeGenerationSettingsBuilder;
 import net.minecraftforge.event.LootTableLoadEvent;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 import net.minecraftforge.event.world.BiomeLoadingEvent;
@@ -24,11 +27,11 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.fml.util.ObfuscationReflectionHelper;
 import teamdraco.bettas.entity.BettaFishEntity;
 import teamdraco.bettas.init.BettasBlocks;
+import teamdraco.bettas.init.BettasConfiguredFeatures;
 import teamdraco.bettas.init.BettasEntities;
 import teamdraco.bettas.init.BettasFeatures;
 import teamdraco.bettas.init.BettasItems;
-
-import java.util.List;
+import teamdraco.bettas.init.BettasPlacedFeatures;
 
 @Mod(Bettas.MOD_ID)
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.FORGE, modid = Bettas.MOD_ID)
@@ -43,6 +46,8 @@ public class Bettas {
         BettasBlocks.BLOCKS.register(bus);
         BettasEntities.ENTITIES.register(bus);
         BettasFeatures.FEATURES.register(bus);
+        BettasConfiguredFeatures.CONFIGURED_FEATURES.register(bus);
+        BettasPlacedFeatures.PLACED_FEATURES.register(bus);
 
         bus.addListener(this::registerEntityAttributes);
 
@@ -56,6 +61,14 @@ public class Bettas {
 
         }
     }
+    
+    @SubscribeEvent
+    public static void onBiomeLoad(BiomeLoadingEvent event) {
+    	BiomeGenerationSettingsBuilder builder = event.getGeneration();
+    	if (event.getCategory() == Biome.BiomeCategory.SWAMP) {
+    		builder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, BettasPlacedFeatures.PLACED_MOSS_BALLS.getHolder().orElseThrow());
+    	}
+    }
 
     private void registerCommon(FMLCommonSetupEvent event) {
         SpawnPlacements.register(BettasEntities.BETTA_FISH.get(), SpawnPlacements.Type.IN_WATER, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, BettaFishEntity::checkBettaFishSpawnRules);
@@ -68,7 +81,8 @@ public class Bettas {
     //Thanks to BlueDuck for the help with the loot table code :)
     @Mod.EventBusSubscriber(modid = Bettas.MOD_ID)
     public static class LootEvents {
-        @SubscribeEvent
+        @SuppressWarnings("unlikely-arg-type")
+		@SubscribeEvent
         public static void onLootLoad(LootTableLoadEvent event) throws IllegalAccessException {
             ResourceLocation name = event.getName();
             if (name.equals(LootContextParamSets.FISHING)) {
@@ -82,7 +96,8 @@ public class Bettas {
         return LootTableReference.lootTableReference(location).setWeight(weight).setQuality(quality).build();
     }
 
-    private static void addEntry(LootPool pool, LootPoolEntryContainer entry) throws IllegalAccessException {
+    @SuppressWarnings("unchecked")
+	private static void addEntry(LootPool pool, LootPoolEntryContainer entry) throws IllegalAccessException {
         List<LootPoolEntryContainer> lootEntries = (List<LootPoolEntryContainer>) ObfuscationReflectionHelper.findField(LootPool.class, "entries").get(pool);
         if (lootEntries.stream().anyMatch(e -> e == entry)) {
             throw new RuntimeException("Attempted to add a duplicate entry to pool: " + entry);

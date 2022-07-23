@@ -67,14 +67,15 @@ public class MossBallBlock extends BushBlock implements SimpleWaterloggedBlock, 
             return Blocks.AIR.defaultBlockState();
         } else {
             if (stateIn.getValue(WATERLOGGED)) {
-                worldIn.m_183324_().m_183588_(currentPos, Fluids.WATER);
+            	worldIn.scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickDelay(worldIn));
             }
 
             return super.updateShape(stateIn, facing, facingState, worldIn, currentPos, facingPos);
         }
     }
 
-    public boolean canBeReplaced(BlockState state, BlockPlaceContext useContext) {
+    @SuppressWarnings("deprecation")
+	public boolean canBeReplaced(BlockState state, BlockPlaceContext useContext) {
         return useContext.getItemInHand().getItem() == this.asItem() && state.getValue(BALLS) < 4 || super.canBeReplaced(state, useContext);
     }
 
@@ -92,7 +93,8 @@ public class MossBallBlock extends BushBlock implements SimpleWaterloggedBlock, 
         }
     }
 
-    public FluidState getFluidState(BlockState state) {
+    @SuppressWarnings("deprecation")
+	public FluidState getFluidState(BlockState state) {
         return state.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : super.getFluidState(state);
     }
 
@@ -108,7 +110,8 @@ public class MossBallBlock extends BushBlock implements SimpleWaterloggedBlock, 
         return true;
     }
 
-    public void performBonemeal(ServerLevel worldIn, Random rand, BlockPos pos, BlockState state) {
+    @SuppressWarnings("unused")
+	public void performBonemeal(ServerLevel worldIn, Random rand, BlockPos pos, BlockState state) {
         if (!isInBadEnvironment(state) && worldIn.getBlockState(pos.below()).getBlock() == BettasBlocks.MOSS_BALL_BLOCK.get()) {
             int i = 5;
             int j = 1;
