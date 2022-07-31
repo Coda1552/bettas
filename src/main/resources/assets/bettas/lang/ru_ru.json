@@ -1,0 +1,12 @@
+{
+  "entity.bettas.betta_fish": "Рыба-петушок",
+
+  "item.bettas.betta_fish": "Рыба-петушок",
+  "item.bettas.betta_fish_bucket": "Рыба-петушок в ведре",
+  "item.bettas.betta_fish_spawn_egg": "Яйцо призыва рыбы-петушка",
+  "item.bettas.blackwater_bottle": "Бутылочка чёрной воды",
+
+  "block.bettas.moss_ball": "Моховой шар",
+  "block.bettas.moss_ball_block": "Блок моховых шаров",
+  "block.bettas.dried_leaves": "Высушенные листья"
+}
