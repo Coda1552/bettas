@@ -20,7 +20,10 @@ jobs:
       - name: Make Gradle wrapper executable
         run: chmod +x ./gradlew
 
-      - name: Upload artifacts (Artifacts, for root project)
+      - name: Build
+        run: ./gradlew build --stacktrace --parallel
+
+      - name: Upload artifacts
         uses: actions/upload-artifact@v2
         with:
           name: Artifacts
