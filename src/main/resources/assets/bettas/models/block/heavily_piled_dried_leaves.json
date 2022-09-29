@@ -1,14 +1,32 @@
 {
-	"textures": {
-		"dried": "bettas:block/heavily_piled_dried_leaves",
-		"particle": "bettas:block/heavily_piled_dried_leaves"
-	},
-	"elements": [
-		{
-			"from": [0, 0, 0],
-			"to": [16, 5, 16],
-			"faces": {
-				"north": {"uv": [0, 0, 16, 5], "texture": "#dried", "cullface": "north" },
+  "render_type": "cutout",
+  "textures": {
+    "dried": "bettas:block/heavily_piled_dried_leaves",
+    "particle": "bettas:block/heavily_piled_dried_leaves"
+  },
+  "elements": [
+    {
+      "from": [
+        0,
+        0,
+        0
+      ],
+      "to": [
+        16,
+        5,
+        16
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            0,
+            0,
+            16,
+            5
+          ],
+          "texture": "#dried",
+          "cullface": "north"
+        },
 				"east": {"uv": [0, 0, 16, 5], "texture": "#dried", "cullface": "east"},
 				"south": {"uv": [0, 0, 16, 5], "texture": "#dried", "cullface": "south"},
 				"west": {"uv": [0, 0, 16, 5], "texture": "#dried", "cullface": "west"},

@@ -1,37 +1,31 @@
-package teamdraco.bettas;
-
-import java.util.List;
+package teamfusion.bettas;
 
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.entity.SpawnPlacements;
-import net.minecraft.world.level.biome.Biome;
-import net.minecraft.world.level.biome.MobSpawnSettings;
-import net.minecraft.world.level.levelgen.GenerationStep;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.entries.LootPoolEntryContainer;
 import net.minecraft.world.level.storage.loot.entries.LootTableReference;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.common.world.BiomeGenerationSettingsBuilder;
 import net.minecraftforge.event.LootTableLoadEvent;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
-import net.minecraftforge.event.world.BiomeLoadingEvent;
-import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.fml.util.ObfuscationReflectionHelper;
-import teamdraco.bettas.entity.BettaFishEntity;
-import teamdraco.bettas.init.BettasBlocks;
-import teamdraco.bettas.init.BettasConfiguredFeatures;
-import teamdraco.bettas.init.BettasEntities;
-import teamdraco.bettas.init.BettasFeatures;
-import teamdraco.bettas.init.BettasItems;
-import teamdraco.bettas.init.BettasPlacedFeatures;
+import teamfusion.bettas.entity.BettaFishEntity;
+import teamfusion.bettas.init.BettaBiomeModifiers;
+import teamfusion.bettas.init.BettasBlocks;
+import teamfusion.bettas.init.BettasConfiguredFeatures;
+import teamfusion.bettas.init.BettasEntities;
+import teamfusion.bettas.init.BettasFeatures;
+import teamfusion.bettas.init.BettasItems;
+import teamfusion.bettas.init.BettasPlacedFeatures;
+
+import java.util.List;
 
 @Mod(Bettas.MOD_ID)
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.FORGE, modid = Bettas.MOD_ID)
@@ -42,6 +36,7 @@ public class Bettas {
         IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
         bus.addListener(this::registerCommon);
 
+        BettaBiomeModifiers.BIOME_MODIFIER_SERIALIZERS.register(bus);
         BettasItems.ITEMS.register(bus);
         BettasBlocks.BLOCKS.register(bus);
         BettasEntities.ENTITIES.register(bus);
@@ -52,22 +47,6 @@ public class Bettas {
         bus.addListener(this::registerEntityAttributes);
 
         MinecraftForge.EVENT_BUS.register(this);
-    }
-
-    @SubscribeEvent(priority = EventPriority.LOWEST)
-    public static void registerBiomes(BiomeLoadingEvent event) {
-        if (event.getCategory() == Biome.BiomeCategory.SWAMP) {
-            event.getSpawns().getSpawner(MobCategory.WATER_CREATURE).add(new MobSpawnSettings.SpawnerData(BettasEntities.BETTA_FISH.get(), 1, 1, 2));
-
-        }
-    }
-    
-    @SubscribeEvent
-    public static void onBiomeLoad(BiomeLoadingEvent event) {
-    	BiomeGenerationSettingsBuilder builder = event.getGeneration();
-    	if (event.getCategory() == Biome.BiomeCategory.SWAMP) {
-    		builder.addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, BettasPlacedFeatures.PLACED_MOSS_BALLS.getHolder().orElseThrow());
-    	}
     }
 
     private void registerCommon(FMLCommonSetupEvent event) {

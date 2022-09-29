@@ -1,4 +1,4 @@
-package teamdraco.bettas.entity;
+package teamfusion.bettas.entity;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
@@ -9,6 +9,8 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
@@ -34,12 +36,10 @@ import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
-import teamdraco.bettas.init.BettasBlocks;
-import teamdraco.bettas.init.BettasItems;
-import net.minecraft.world.DifficultyInstance;
+import teamfusion.bettas.init.BettasBlocks;
+import teamfusion.bettas.init.BettasItems;
 
 import javax.annotation.Nullable;
-import java.util.Random;
 
 public class BettaFishEntity extends AbstractFish implements Bucketable {
     public static final int MAX_VARIANTS = 120;
@@ -75,7 +75,7 @@ public class BettaFishEntity extends AbstractFish implements Bucketable {
         return Monster.createMobAttributes().add(Attributes.MAX_HEALTH, 6.0D).add(Attributes.ATTACK_DAMAGE, 1.0D);
     }
 
-    public static boolean checkBettaFishSpawnRules(EntityType<? extends AbstractFish> type, BlockGetter worldIn, MobSpawnType reason, BlockPos p_223363_3_, Random randomIn) {
+    public static boolean checkBettaFishSpawnRules(EntityType<? extends AbstractFish> type, BlockGetter worldIn, MobSpawnType reason, BlockPos p_223363_3_, RandomSource randomIn) {
         return worldIn.getBlockState(p_223363_3_).is(Blocks.WATER) && worldIn.getBlockState(p_223363_3_.above()).is(Blocks.WATER) && randomIn.nextFloat() > 0.9;
     }
 

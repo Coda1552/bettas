@@ -1,18 +1,18 @@
-package teamdraco.bettas.client.renderer;
+package teamfusion.bettas.client.renderer;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Vector3f;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
-import teamdraco.bettas.Bettas;
-import teamdraco.bettas.client.model.BettaFishModel;
-import teamdraco.bettas.entity.BettaFishEntity;
-import net.minecraft.client.Minecraft;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import teamfusion.bettas.Bettas;
+import teamfusion.bettas.client.model.BettaFishModel;
+import teamfusion.bettas.entity.BettaFishEntity;
 
 @OnlyIn(Dist.CLIENT)
 public class BettaFishRenderer extends MobRenderer<BettaFishEntity, BettaFishModel<BettaFishEntity>> {
@@ -29,7 +29,7 @@ public class BettaFishRenderer extends MobRenderer<BettaFishEntity, BettaFishMod
         int variant = entity.getVariant();
         if (TEXTURES[variant] == null) {
             ResourceLocation loc = new ResourceLocation(Bettas.MOD_ID, "textures/entity/betta/body_" + variant + ".png");
-            if (!Minecraft.getInstance().getResourceManager().hasResource(loc)) {
+            if (!Minecraft.getInstance().getResourceManager().getResource(loc).isPresent()) {
                 System.out.println("Found Unknown variant " + variant + ", using default");
                 loc = new ResourceLocation(Bettas.MOD_ID, "textures/entity/betta/body_0.png");
             }

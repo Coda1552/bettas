@@ -1,11 +1,11 @@
-package teamdraco.bettas.init;
+package teamfusion.bettas.init;
 
 import net.minecraft.core.Registry;
 import net.minecraft.data.worldgen.placement.VegetationPlacements;
 import net.minecraft.world.level.levelgen.placement.PlacedFeature;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.RegistryObject;
-import teamdraco.bettas.Bettas;
+import teamfusion.bettas.Bettas;
 
 public class BettasPlacedFeatures {
 	

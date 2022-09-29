@@ -1,7 +1,8 @@
-package teamdraco.bettas.feature;
+package teamfusion.bettas.feature;
 
 import com.mojang.serialization.Codec;
 import net.minecraft.core.BlockPos;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.SeaPickleBlock;
@@ -10,9 +11,7 @@ import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.configurations.CountConfiguration;
-import teamdraco.bettas.init.BettasBlocks;
-
-import java.util.Random;
+import teamfusion.bettas.init.BettasBlocks;
 
 public class MossBallFeature extends Feature<CountConfiguration> {
 
@@ -22,7 +21,7 @@ public class MossBallFeature extends Feature<CountConfiguration> {
 
     public boolean place(FeaturePlaceContext<CountConfiguration> context) {
         WorldGenLevel reader = context.level();
-        Random rand = context.random();
+        RandomSource rand = context.random();
         CountConfiguration config = context.config();
         BlockPos pos = context.origin();
 
