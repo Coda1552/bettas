@@ -16,6 +16,7 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.SpawnGroupData;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
@@ -26,7 +27,6 @@ import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.animal.AbstractFish;
 import net.minecraft.world.entity.animal.Bucketable;
-import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.item.ItemStack;
@@ -54,6 +54,13 @@ public class BettaFishEntity extends AbstractFish implements Bucketable {
         this.goalSelector.addGoal(0, new MeleeAttackGoal(this, 2.0D, true));
         this.goalSelector.addGoal(1, new RandomSwimmingGoal(this, 1.0D, 20));
         this.targetSelector.addGoal(0, new HurtByTargetGoal(this, BettaFishEntity.class));
+        this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, BettaFishEntity.class, false) {
+            @Override
+            public boolean canUse() {
+                return isFromBucket() && super.canUse();
+            }
+        });
+
     }
 
     private boolean isFromBucket() {
@@ -72,7 +79,7 @@ public class BettaFishEntity extends AbstractFish implements Bucketable {
     }
 
     public static AttributeSupplier.Builder createAttributes() {
-        return Monster.createMobAttributes().add(Attributes.MAX_HEALTH, 6.0D).add(Attributes.ATTACK_DAMAGE, 1.0D);
+        return Mob.createMobAttributes().add(Attributes.MAX_HEALTH, 6.0D).add(Attributes.ATTACK_DAMAGE, 1.0D);
     }
 
     public static boolean checkBettaFishSpawnRules(EntityType<? extends AbstractFish> type, BlockGetter worldIn, MobSpawnType reason, BlockPos p_223363_3_, RandomSource randomIn) {
@@ -171,7 +178,6 @@ public class BettaFishEntity extends AbstractFish implements Bucketable {
         } else {
             if (dataTag.contains("Variant", 3)) {
                 this.setVariant(dataTag.getInt("Variant"));
-                this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, BettaFishEntity.class, false));
             }
             if (dataTag.contains("Health", 99)) {
                 this.setHealth(dataTag.getFloat("Health"));
