@@ -9,6 +9,7 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.Mth;
+import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
@@ -36,7 +37,6 @@ import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import teamdraco.bettas.init.BettasBlocks;
 import teamdraco.bettas.init.BettasItems;
-import net.minecraft.world.DifficultyInstance;
 
 import javax.annotation.Nullable;
 import java.util.Random;
@@ -54,6 +54,13 @@ public class BettaFishEntity extends AbstractFish implements Bucketable {
         this.goalSelector.addGoal(0, new MeleeAttackGoal(this, 2.0D, true));
         this.goalSelector.addGoal(1, new RandomSwimmingGoal(this, 1.0D, 20));
         this.targetSelector.addGoal(0, new HurtByTargetGoal(this, BettaFishEntity.class));
+        this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, BettaFishEntity.class, false) {
+            @Override
+            public boolean canUse() {
+                return isFromBucket() && super.canUse();
+            }
+        });
+
     }
 
     private boolean isFromBucket() {
@@ -171,7 +178,6 @@ public class BettaFishEntity extends AbstractFish implements Bucketable {
         } else {
             if (dataTag.contains("Variant", 3)) {
                 this.setVariant(dataTag.getInt("Variant"));
-                this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, BettaFishEntity.class, false));
             }
             if (dataTag.contains("Health", 99)) {
                 this.setHealth(dataTag.getFloat("Health"));
