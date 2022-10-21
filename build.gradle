@@ -16,7 +16,7 @@ plugins {
 apply plugin: 'net.minecraftforge.gradle'
 
 
-version = '1.0'
+version = 'forge-1.19.2-1.0.0'
 group = 'teamfusion.bettas' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = 'bettas'
 
