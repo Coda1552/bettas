@@ -2,22 +2,24 @@ package teamdraco.bettas.client.renderer;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Vector3f;
+import net.minecraft.ChatFormatting;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import teamdraco.bettas.Bettas;
 import teamdraco.bettas.client.model.BettaFishModel;
 import teamdraco.bettas.entity.BettaFishEntity;
-import net.minecraft.client.Minecraft;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
 public class BettaFishRenderer extends MobRenderer<BettaFishEntity, BettaFishModel<BettaFishEntity>> {
     public static final ModelLayerLocation MODEL_LAYER = new ModelLayerLocation(new ResourceLocation(Bettas.MOD_ID, "betta"), "main");
     private static final ResourceLocation[] TEXTURES = new ResourceLocation[BettaFishEntity.MAX_VARIANTS];
+    private static final ResourceLocation BETO = new ResourceLocation(Bettas.MOD_ID, "textures/entity/betta/beto");
 
     public BettaFishRenderer(EntityRendererProvider.Context manager) {
         super(manager, new BettaFishModel<>(manager.bakeLayer(MODEL_LAYER)), 0.2F);
@@ -26,6 +28,10 @@ public class BettaFishRenderer extends MobRenderer<BettaFishEntity, BettaFishMod
 
     @Override
     public ResourceLocation getTextureLocation(BettaFishEntity entity) {
+        String s = ChatFormatting.stripFormatting(entity.getName().getString());
+        if (s != null && ("beto".equals(s) || "Beto".equals(s))) {
+            return BETO;
+        }
         int variant = entity.getVariant();
         if (TEXTURES[variant] == null) {
             ResourceLocation loc = new ResourceLocation(Bettas.MOD_ID, "textures/entity/betta/body_" + variant + ".png");
