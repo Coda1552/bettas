@@ -1,16 +1,16 @@
-package teamdraco.bettas.init;
+package teamfusion.bettas.init;
 
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.material.MaterialColor;
-import net.minecraftforge.registries.RegistryObject;
-import teamdraco.bettas.Bettas;
-import teamdraco.bettas.block.DriedLeavesBlock;
-import teamdraco.bettas.block.MossBallBlock;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.registries.RegistryObject;
+import teamfusion.bettas.Bettas;
+import teamfusion.bettas.block.DriedLeavesBlock;
+import teamfusion.bettas.block.MossBallBlock;
 
 public class BettasBlocks {
     public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, Bettas.MOD_ID);

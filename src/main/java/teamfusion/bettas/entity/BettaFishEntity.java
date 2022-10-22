@@ -1,4 +1,4 @@
-package teamdraco.bettas.entity;
+package teamfusion.bettas.entity;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
@@ -35,8 +35,8 @@ import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
-import teamdraco.bettas.init.BettasBlocks;
-import teamdraco.bettas.init.BettasItems;
+import teamfusion.bettas.init.BettasBlocks;
+import teamfusion.bettas.init.BettasItems;
 
 import javax.annotation.Nullable;
 import java.util.Random;

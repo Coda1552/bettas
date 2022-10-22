@@ -1,4 +1,4 @@
-package teamdraco.bettas.client.renderer;
+package teamfusion.bettas.client.renderer;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Vector3f;
@@ -11,9 +11,9 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import teamdraco.bettas.Bettas;
-import teamdraco.bettas.client.model.BettaFishModel;
-import teamdraco.bettas.entity.BettaFishEntity;
+import teamfusion.bettas.Bettas;
+import teamfusion.bettas.client.model.BettaFishModel;
+import teamfusion.bettas.entity.BettaFishEntity;
 
 @OnlyIn(Dist.CLIENT)
 public class BettaFishRenderer extends MobRenderer<BettaFishEntity, BettaFishModel<BettaFishEntity>> {

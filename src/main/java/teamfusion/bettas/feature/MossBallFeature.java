@@ -1,4 +1,4 @@
-package teamdraco.bettas.feature;
+package teamfusion.bettas.feature;
 
 import com.mojang.serialization.Codec;
 import net.minecraft.core.BlockPos;
@@ -10,7 +10,7 @@ import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.configurations.CountConfiguration;
-import teamdraco.bettas.init.BettasBlocks;
+import teamfusion.bettas.init.BettasBlocks;
 
 import java.util.Random;
 

@@ -1,6 +1,4 @@
-package teamdraco.bettas;
-
-import java.util.List;
+package teamfusion.bettas;
 
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.MobCategory;
@@ -25,13 +23,15 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.fml.util.ObfuscationReflectionHelper;
-import teamdraco.bettas.entity.BettaFishEntity;
-import teamdraco.bettas.init.BettasBlocks;
-import teamdraco.bettas.init.BettasConfiguredFeatures;
-import teamdraco.bettas.init.BettasEntities;
-import teamdraco.bettas.init.BettasFeatures;
-import teamdraco.bettas.init.BettasItems;
-import teamdraco.bettas.init.BettasPlacedFeatures;
+import teamfusion.bettas.entity.BettaFishEntity;
+import teamfusion.bettas.init.BettasBlocks;
+import teamfusion.bettas.init.BettasConfiguredFeatures;
+import teamfusion.bettas.init.BettasEntities;
+import teamfusion.bettas.init.BettasFeatures;
+import teamfusion.bettas.init.BettasItems;
+import teamfusion.bettas.init.BettasPlacedFeatures;
+
+import java.util.List;
 
 @Mod(Bettas.MOD_ID)
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.FORGE, modid = Bettas.MOD_ID)

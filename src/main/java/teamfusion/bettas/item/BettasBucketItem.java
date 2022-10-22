@@ -1,4 +1,4 @@
-package teamdraco.bettas.item;
+package teamfusion.bettas.item;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.advancements.CriteriaTriggers;

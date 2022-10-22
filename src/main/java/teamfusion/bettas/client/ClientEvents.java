@@ -1,4 +1,4 @@
-package teamdraco.bettas.client;
+package teamfusion.bettas.client;
 
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
@@ -9,11 +9,11 @@ import net.minecraftforge.client.ForgeHooksClient;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
-import teamdraco.bettas.Bettas;
-import teamdraco.bettas.client.model.BettaFishModel;
-import teamdraco.bettas.client.renderer.BettaFishRenderer;
-import teamdraco.bettas.init.BettasBlocks;
-import teamdraco.bettas.init.BettasEntities;
+import teamfusion.bettas.Bettas;
+import teamfusion.bettas.client.model.BettaFishModel;
+import teamfusion.bettas.client.renderer.BettaFishRenderer;
+import teamfusion.bettas.init.BettasBlocks;
+import teamfusion.bettas.init.BettasEntities;
 
 @OnlyIn(Dist.CLIENT)
 @Mod.EventBusSubscriber(modid = Bettas.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
