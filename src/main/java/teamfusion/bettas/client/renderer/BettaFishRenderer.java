@@ -2,6 +2,7 @@ package teamfusion.bettas.client.renderer;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Vector3f;
+import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
@@ -19,6 +20,8 @@ public class BettaFishRenderer extends MobRenderer<BettaFishEntity, BettaFishMod
     public static final ModelLayerLocation MODEL_LAYER = new ModelLayerLocation(new ResourceLocation(Bettas.MOD_ID, "betta"), "main");
     private static final ResourceLocation[] TEXTURES = new ResourceLocation[BettaFishEntity.MAX_VARIANTS];
 
+    private static final ResourceLocation BETO = new ResourceLocation(Bettas.MOD_ID, "textures/entity/betta/beto");
+
     public BettaFishRenderer(EntityRendererProvider.Context manager) {
         super(manager, new BettaFishModel<>(manager.bakeLayer(MODEL_LAYER)), 0.2F);
         this.shadowRadius = 0.2F;
@@ -26,6 +29,10 @@ public class BettaFishRenderer extends MobRenderer<BettaFishEntity, BettaFishMod
 
     @Override
     public ResourceLocation getTextureLocation(BettaFishEntity entity) {
+        String s = ChatFormatting.stripFormatting(entity.getName().getString());
+        if (s != null && ("beto".equals(s) || "Beto".equals(s))) {
+            return BETO;
+        }
         int variant = entity.getVariant();
         if (TEXTURES[variant] == null) {
             ResourceLocation loc = new ResourceLocation(Bettas.MOD_ID, "textures/entity/betta/body_" + variant + ".png");
