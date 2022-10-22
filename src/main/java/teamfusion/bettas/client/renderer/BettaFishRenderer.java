@@ -20,7 +20,7 @@ public class BettaFishRenderer extends MobRenderer<BettaFishEntity, BettaFishMod
     public static final ModelLayerLocation MODEL_LAYER = new ModelLayerLocation(new ResourceLocation(Bettas.MOD_ID, "betta"), "main");
     private static final ResourceLocation[] TEXTURES = new ResourceLocation[BettaFishEntity.MAX_VARIANTS];
 
-    private static final ResourceLocation BETO = new ResourceLocation(Bettas.MOD_ID, "textures/entity/betta/beto");
+    private static final ResourceLocation BETO = new ResourceLocation(Bettas.MOD_ID, "textures/entity/betta/beto.png");
 
     public BettaFishRenderer(EntityRendererProvider.Context manager) {
         super(manager, new BettaFishModel<>(manager.bakeLayer(MODEL_LAYER)), 0.2F);
