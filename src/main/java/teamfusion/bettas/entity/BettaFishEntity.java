@@ -37,200 +37,254 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import teamfusion.bettas.init.BettasBlocks;
+import teamfusion.bettas.init.BettasEntities;
 import teamfusion.bettas.init.BettasItems;
 
 import javax.annotation.Nullable;
+import java.util.List;
+import java.util.function.Predicate;
 
 public class BettaFishEntity extends AbstractFish implements Bucketable {
-    public static final int MAX_VARIANTS = 120;
-    private static final EntityDataAccessor<Integer> VARIANT = SynchedEntityData.defineId(BettaFishEntity.class, EntityDataSerializers.INT);
-    private static final EntityDataAccessor<Boolean> FROM_BUCKET = SynchedEntityData.defineId(BettaFishEntity.class, EntityDataSerializers.BOOLEAN);
+	public static final int MAX_VARIANTS = 120;
+	private static final EntityDataAccessor<Integer> VARIANT = SynchedEntityData.defineId(BettaFishEntity.class, EntityDataSerializers.INT);
+	private static final EntityDataAccessor<Boolean> FROM_BUCKET = SynchedEntityData.defineId(BettaFishEntity.class, EntityDataSerializers.BOOLEAN);
+	private static final EntityDataAccessor<Boolean> CALMED = SynchedEntityData.defineId(BettaFishEntity.class, EntityDataSerializers.BOOLEAN);
 
-    public BettaFishEntity(EntityType<? extends BettaFishEntity> type, Level worldIn) {
-        super(type, worldIn);
-    }
+	static final Predicate<BettaFishEntity> CALMED_ENTITY = (p_28528_) -> {
+		return p_28528_.isCalmed() && p_28528_.isAlive();
+	};
 
-    protected void registerGoals() {
-        this.goalSelector.addGoal(0, new MeleeAttackGoal(this, 2.0D, true));
-        this.goalSelector.addGoal(1, new RandomSwimmingGoal(this, 1.0D, 20));
-        this.targetSelector.addGoal(0, new HurtByTargetGoal(this, BettaFishEntity.class));
-        this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, BettaFishEntity.class, false) {
-            @Override
-            public boolean canUse() {
-                return isFromBucket() && super.canUse();
-            }
-        });
+	public BettaFishEntity(EntityType<? extends BettaFishEntity> type, Level worldIn) {
+		super(type, worldIn);
+	}
 
-    }
+	protected void registerGoals() {
+		this.goalSelector.addGoal(0, new MeleeAttackGoal(this, 2.0D, true) {
+			@Override
+			public boolean canUse() {
+				return !isCalmed() && super.canUse();
+			}
 
-    private boolean isFromBucket() {
-        return this.entityData.get(FROM_BUCKET);
-    }
+			@Override
+			public boolean canContinueToUse() {
+				return !isCalmed() && super.canContinueToUse();
+			}
+		});
+		this.goalSelector.addGoal(1, new RandomSwimmingGoal(this, 1.0D, 20));
+		this.targetSelector.addGoal(0, new HurtByTargetGoal(this, BettaFishEntity.class) {
+			@Override
+			public boolean canUse() {
+				return !isCalmed() && super.canUse();
+			}
 
-    public void setFromBucket(boolean p_203706_1_) {
-        this.entityData.set(FROM_BUCKET, p_203706_1_);
-    }
+			@Override
+			public boolean canContinueToUse() {
+				return !isCalmed() && super.canContinueToUse();
+			}
+		});
+		this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, BettaFishEntity.class, false) {
+			@Override
+			public boolean canUse() {
+				return isFromBucket() && !isCalmed() && super.canUse();
+			}
 
-    @Override
-    protected void defineSynchedData() {
-        super.defineSynchedData();
-        this.entityData.define(VARIANT, 0);
-        this.entityData.define(FROM_BUCKET, false);
-    }
 
-    public static AttributeSupplier.Builder createAttributes() {
-        return Mob.createMobAttributes().add(Attributes.MAX_HEALTH, 6.0D).add(Attributes.ATTACK_DAMAGE, 1.0D);
-    }
+			@Override
+			public boolean canContinueToUse() {
+				return !isCalmed() && super.canContinueToUse();
+			}
+		});
 
-    public static boolean checkBettaFishSpawnRules(EntityType<? extends AbstractFish> type, BlockGetter worldIn, MobSpawnType reason, BlockPos p_223363_3_, RandomSource randomIn) {
-        return worldIn.getBlockState(p_223363_3_).is(Blocks.WATER) && worldIn.getBlockState(p_223363_3_.above()).is(Blocks.WATER) && randomIn.nextFloat() > 0.9;
-    }
+	}
 
-    public boolean hurt(DamageSource source, float amount) {
-        if (this.isInvulnerableTo(source)) {
-            return false;
-        } else {
-            Entity entity = source.getEntity();
-            if (entity != null && !(entity instanceof Player) && !(entity instanceof AbstractArrow)) {
-                amount = (amount + 1.0F) / 2.0F;
-            }
+	private boolean isFromBucket() {
+		return this.entityData.get(FROM_BUCKET);
+	}
 
-            return super.hurt(source, amount);
-        }
-    }
+	public void setFromBucket(boolean p_203706_1_) {
+		this.entityData.set(FROM_BUCKET, p_203706_1_);
+	}
 
-    public boolean doHurtTarget(Entity entityIn) {
-        boolean flag = entityIn.hurt(DamageSource.mobAttack(this), (float) ((int) this.getAttributeValue(Attributes.ATTACK_DAMAGE)));
-        if (flag) {
-            this.doEnchantDamageEffects(this, entityIn);
-        }
+	public boolean isCalmed() {
+		return this.entityData.get(CALMED);
+	}
 
-        return flag;
-    }
+	public void setCalmed(boolean calmed) {
+		this.entityData.set(CALMED, calmed);
+	}
 
-    public int getVariant() {
-        return this.entityData.get(VARIANT);
-    }
 
-    private void setVariant(int variant) {
-        this.entityData.set(VARIANT, variant);
-    }
+	@Override
+	protected void defineSynchedData() {
+		super.defineSynchedData();
+		this.entityData.define(VARIANT, 0);
+		this.entityData.define(FROM_BUCKET, false);
+		this.entityData.define(CALMED, false);
+	}
 
-    public boolean removeWhenFarAway(double distanceToClosestPlayer) {
-        return !this.isFromBucket() && !this.hasCustomName();
-    }
+	public static AttributeSupplier.Builder createAttributes() {
+		return Mob.createMobAttributes().add(Attributes.MAX_HEALTH, 6.0D).add(Attributes.ATTACK_DAMAGE, 1.0D);
+	}
 
-    public boolean requiresCustomPersistence() {
-        return super.requiresCustomPersistence() || this.isFromBucket();
-    }
+	public static boolean checkBettaFishSpawnRules(EntityType<? extends AbstractFish> type, BlockGetter worldIn, MobSpawnType reason, BlockPos p_223363_3_, RandomSource randomIn) {
+		return worldIn.getBlockState(p_223363_3_).is(Blocks.WATER) && worldIn.getBlockState(p_223363_3_.above()).is(Blocks.WATER) && randomIn.nextFloat() > 0.9;
+	}
 
-    @Override
-    public void tick() {
-        super.tick();
+	public boolean hurt(DamageSource source, float amount) {
+		if (this.isInvulnerableTo(source)) {
+			return false;
+		} else {
+			Entity entity = source.getEntity();
+			if (entity != null && !(entity instanceof Player) && !(entity instanceof AbstractArrow)) {
+				amount = (amount + 1.0F) / 2.0F;
+			}
 
-        if (isMossBallNearby()) {
-            this.setTarget(null);
-        }
-    }
+			return super.hurt(source, amount);
+		}
+	}
+
+	public boolean doHurtTarget(Entity entityIn) {
+		boolean flag = entityIn.hurt(DamageSource.mobAttack(this), (float) ((int) this.getAttributeValue(Attributes.ATTACK_DAMAGE)));
+		if (flag) {
+			this.doEnchantDamageEffects(this, entityIn);
+		}
+
+		return flag;
+	}
+
+	public int getVariant() {
+		return this.entityData.get(VARIANT);
+	}
+
+	private void setVariant(int variant) {
+		this.entityData.set(VARIANT, variant);
+	}
+
+	public boolean removeWhenFarAway(double distanceToClosestPlayer) {
+		return !this.isFromBucket() && !this.hasCustomName();
+	}
+
+	public boolean requiresCustomPersistence() {
+		return super.requiresCustomPersistence() || this.isFromBucket();
+	}
+
+	@Override
+	public void tick() {
+		super.tick();
+
+		if (!this.level.isClientSide()) {
+			if (isMossBallNearby() && !isCalmed()) {
+				List<? extends BettaFishEntity> list = this.level.getEntities(BettasEntities.BETTA_FISH.get(), this.getBoundingBox().inflate(8.0D), CALMED_ENTITY);
+
+				if (list.isEmpty() || list.size() < 2) {
+					this.setCalmed(true);
+				}
+			} else if (isCalmed() && !isMossBallNearby()) {
+				this.setCalmed(false);
+			}
+		}
+	}
 
     private boolean isMossBallNearby() {
-        BlockPos blockpos = this.blockPosition();
-        BlockPos.MutableBlockPos blockpos$mutable = new BlockPos.MutableBlockPos();
+		BlockPos blockpos = this.blockPosition();
+		BlockPos.MutableBlockPos blockpos$mutable = new BlockPos.MutableBlockPos();
 
-        for (int i = 0; i < 8; ++i) {
-            for (int j = 0; j < 8; ++j) {
-                for (int k = 0; k <= j; k = k > 0 ? -k : 1 - k) {
-                    for (int l = k < j && k > -j ? j : 0; l <= j; l = l > 0 ? -l : 1 - l) {
-                        blockpos$mutable.setWithOffset(blockpos, k, i, l);
-                        if (this.level.getBlockState(blockpos$mutable).is(BettasBlocks.MOSS_BALL_BLOCK.get())) {
-                            return true;
-                        }
-                    }
-                }
-            }
-        }
+		for (int i = 0; i < 8; ++i) {
+			for (int j = 0; j < 8; ++j) {
+				for (int k = 0; k <= j; k = k > 0 ? -k : 1 - k) {
+					for (int l = k < j && k > -j ? j : 0; l <= j; l = l > 0 ? -l : 1 - l) {
+						blockpos$mutable.setWithOffset(blockpos, k, i, l);
+						if (this.level.getBlockState(blockpos$mutable).is(BettasBlocks.MOSS_BALL.get())) {
+							return true;
+						}
+					}
+				}
+			}
+		}
 
-        return false;
-    }
+		return false;
+	}
 
-    @Override
-    public void addAdditionalSaveData(CompoundTag compound) {
-        super.addAdditionalSaveData(compound);
-        compound.putInt("Variant", getVariant());
-        compound.putBoolean("FromBucket", this.isFromBucket());
-    }
+	@Override
+	public void addAdditionalSaveData(CompoundTag compound) {
+		super.addAdditionalSaveData(compound);
+		compound.putInt("Variant", getVariant());
+		compound.putBoolean("FromBucket", this.isFromBucket());
+		compound.putBoolean("Calmed", this.isCalmed());
+	}
 
-    @Override
-    public void readAdditionalSaveData(CompoundTag compound) {
-        super.readAdditionalSaveData(compound);
-        setVariant(Mth.clamp(compound.getInt("Variant"), 0, MAX_VARIANTS - 1));
-        this.setFromBucket(compound.getBoolean("FromBucket"));
-    }
+	@Override
+	public void readAdditionalSaveData(CompoundTag compound) {
+		super.readAdditionalSaveData(compound);
+		setVariant(Mth.clamp(compound.getInt("Variant"), 0, MAX_VARIANTS - 1));
+		this.setFromBucket(compound.getBoolean("FromBucket"));
+		this.setCalmed(compound.getBoolean("Calmed"));
+	}
 
-    @Nullable
-    @Override
-    public SpawnGroupData finalizeSpawn(ServerLevelAccessor worldIn, DifficultyInstance difficultyIn, MobSpawnType reason, @Nullable SpawnGroupData spawnDataIn, @Nullable CompoundTag dataTag) {
-        if (dataTag == null) {
-            double chance = getRandom().nextDouble();
-            if (chance <= 0.45) setVariant(getRandom().nextInt(MAX_VARIANTS));
-            else if (chance <= 0.7) setVariant(24);
-            else setVariant(100);
-        } else {
-            if (dataTag.contains("Variant", 3)) {
-                this.setVariant(dataTag.getInt("Variant"));
-            }
-            if (dataTag.contains("Health", 99)) {
-                this.setHealth(dataTag.getFloat("Health"));
-            }
-        }
-        return super.finalizeSpawn(worldIn, difficultyIn, reason, spawnDataIn, dataTag);
-    }
+	@Nullable
+	@Override
+	public SpawnGroupData finalizeSpawn(ServerLevelAccessor worldIn, DifficultyInstance difficultyIn, MobSpawnType reason, @Nullable SpawnGroupData spawnDataIn, @Nullable CompoundTag dataTag) {
+		if (dataTag == null) {
+			double chance = getRandom().nextDouble();
+			if (chance <= 0.45) setVariant(getRandom().nextInt(MAX_VARIANTS));
+			else if (chance <= 0.7) setVariant(24);
+			else setVariant(100);
+		} else {
+			if (dataTag.contains("Variant", 3)) {
+				this.setVariant(dataTag.getInt("Variant"));
+			}
+			if (dataTag.contains("Health", 99)) {
+				this.setHealth(dataTag.getFloat("Health"));
+			}
+		}
+		return super.finalizeSpawn(worldIn, difficultyIn, reason, spawnDataIn, dataTag);
+	}
 
-    public void saveToBucketTag(ItemStack bucket) {
-        CompoundTag compoundnbt = bucket.getOrCreateTag();
-        compoundnbt.putInt("Variant", this.getVariant());
-        compoundnbt.putFloat("Health", this.getHealth());
-    }
+	public void saveToBucketTag(ItemStack bucket) {
+		CompoundTag compoundnbt = bucket.getOrCreateTag();
+		compoundnbt.putInt("Variant", this.getVariant());
+		compoundnbt.putFloat("Health", this.getHealth());
+	}
 
-    @Override
-    public ItemStack getBucketItemStack() {
-        return new ItemStack(BettasItems.BETTA_FISH_BUCKET.get());
-    }
+	@Override
+	public ItemStack getBucketItemStack() {
+		return new ItemStack(BettasItems.BETTA_FISH_BUCKET.get());
+	}
 
-    @Override
-    protected SoundEvent getFlopSound() {
-        return SoundEvents.COD_FLOP;
-    }
+	@Override
+	protected SoundEvent getFlopSound() {
+		return SoundEvents.COD_FLOP;
+	}
 
-    protected SoundEvent getDeathSound() {
-        return SoundEvents.COD_DEATH;
-    }
+	protected SoundEvent getDeathSound() {
+		return SoundEvents.COD_DEATH;
+	}
 
-    protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
-        return SoundEvents.COD_HURT;
-    }
+	protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
+		return SoundEvents.COD_HURT;
+	}
 
-    @Override
-    public ItemStack getPickedResult(HitResult result) {
-        return new ItemStack(BettasItems.BETTA_FISH_SPAWN_EGG.get());
-    }
+	@Override
+	public ItemStack getPickedResult(HitResult result) {
+		return new ItemStack(BettasItems.BETTA_FISH_SPAWN_EGG.get());
+	}
 
-    @Override
-    public InteractionResult interactAt(Player player, Vec3 vec, InteractionHand hand) {
-        ItemStack stack = player.getItemInHand(hand);
-        float maxHealth = this.getMaxHealth();
-        float health = this.getHealth();
-        if (stack.getItem() == BettasItems.BLACKWATER_BOTTLE.get() && health < maxHealth) {
-            if (!player.isCreative()) {
-                stack.shrink(1);
-            }
-            heal(3);
-            double d0 = this.random.nextGaussian() * 0.02D;
-            double d1 = this.random.nextGaussian() * 0.02D;
-            double d2 = this.random.nextGaussian() * 0.02D;
-            this.level.addParticle(ParticleTypes.HEART, this.getRandomX(1.0D), this.getRandomY() + 0.5D, this.getRandomZ(1.0D), d0, d1, d2);
-            return InteractionResult.PASS;
-        }
-        return super.interactAt(player, vec, hand);
-    }
+	@Override
+	public InteractionResult interactAt(Player player, Vec3 vec, InteractionHand hand) {
+		ItemStack stack = player.getItemInHand(hand);
+		float maxHealth = this.getMaxHealth();
+		float health = this.getHealth();
+		if (stack.getItem() == BettasItems.BLACKWATER_BOTTLE.get() && health < maxHealth) {
+			if (!player.isCreative()) {
+				stack.shrink(1);
+			}
+			heal(3);
+			double d0 = this.random.nextGaussian() * 0.02D;
+			double d1 = this.random.nextGaussian() * 0.02D;
+			double d2 = this.random.nextGaussian() * 0.02D;
+			this.level.addParticle(ParticleTypes.HEART, this.getRandomX(1.0D), this.getRandomY() + 0.5D, this.getRandomZ(1.0D), d0, d1, d2);
+			return InteractionResult.PASS;
+		}
+		return super.interactAt(player, vec, hand);
+	}
 }
