@@ -36,31 +36,64 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import teamfusion.bettas.init.BettasBlocks;
+import teamfusion.bettas.init.BettasEntities;
 import teamfusion.bettas.init.BettasItems;
 
 import javax.annotation.Nullable;
+import java.util.List;
 import java.util.Random;
+import java.util.function.Predicate;
 
 public class BettaFishEntity extends AbstractFish implements Bucketable {
     public static final int MAX_VARIANTS = 120;
     private static final EntityDataAccessor<Integer> VARIANT = SynchedEntityData.defineId(BettaFishEntity.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Boolean> FROM_BUCKET = SynchedEntityData.defineId(BettaFishEntity.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Boolean> CALMED = SynchedEntityData.defineId(BettaFishEntity.class, EntityDataSerializers.BOOLEAN);
+
+    static final Predicate<BettaFishEntity> CALMED_ENTITY = (p_28528_) -> {
+        return p_28528_.isCalmed() && p_28528_.isAlive();
+    };
 
     public BettaFishEntity(EntityType<? extends BettaFishEntity> type, Level worldIn) {
         super(type, worldIn);
     }
 
     protected void registerGoals() {
-        this.goalSelector.addGoal(0, new MeleeAttackGoal(this, 2.0D, true));
+        this.goalSelector.addGoal(0, new MeleeAttackGoal(this, 2.0D, true) {
+            @Override
+            public boolean canUse() {
+                return !isCalmed() && super.canUse();
+            }
+
+            @Override
+            public boolean canContinueToUse() {
+                return !isCalmed() && super.canContinueToUse();
+            }
+        });
         this.goalSelector.addGoal(1, new RandomSwimmingGoal(this, 1.0D, 20));
-        this.targetSelector.addGoal(0, new HurtByTargetGoal(this, BettaFishEntity.class));
+        this.targetSelector.addGoal(0, new HurtByTargetGoal(this, BettaFishEntity.class) {
+            @Override
+            public boolean canUse() {
+                return !isCalmed() && super.canUse();
+            }
+
+            @Override
+            public boolean canContinueToUse() {
+                return !isCalmed() && super.canContinueToUse();
+            }
+        });
         this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, BettaFishEntity.class, false) {
             @Override
             public boolean canUse() {
-                return isFromBucket() && super.canUse();
+                return isFromBucket() && !isCalmed() && super.canUse();
+            }
+
+
+            @Override
+            public boolean canContinueToUse() {
+                return !isCalmed() && super.canContinueToUse();
             }
         });
-
     }
 
     private boolean isFromBucket() {
@@ -71,11 +104,20 @@ public class BettaFishEntity extends AbstractFish implements Bucketable {
         this.entityData.set(FROM_BUCKET, p_203706_1_);
     }
 
+    public boolean isCalmed() {
+        return this.entityData.get(CALMED);
+    }
+
+    public void setCalmed(boolean calmed) {
+        this.entityData.set(CALMED, calmed);
+    }
+
     @Override
     protected void defineSynchedData() {
         super.defineSynchedData();
         this.entityData.define(VARIANT, 0);
         this.entityData.define(FROM_BUCKET, false);
+        this.entityData.define(CALMED, false);
     }
 
     public static AttributeSupplier.Builder createAttributes() {
@@ -128,8 +170,16 @@ public class BettaFishEntity extends AbstractFish implements Bucketable {
     public void tick() {
         super.tick();
 
-        if (isMossBallNearby()) {
-            this.setTarget(null);
+        if (!this.level.isClientSide()) {
+            if (isMossBallNearby() && !isCalmed()) {
+                List<? extends BettaFishEntity> list = this.level.getEntities(BettasEntities.BETTA_FISH.get(), this.getBoundingBox().inflate(8.0D), CALMED_ENTITY);
+
+                if (list.isEmpty() || list.size() < 2) {
+                    this.setCalmed(true);
+                }
+            } else if (isCalmed() && !isMossBallNearby()) {
+                this.setCalmed(false);
+            }
         }
     }
 
