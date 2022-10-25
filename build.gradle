@@ -17,8 +17,8 @@ apply plugin: 'net.minecraftforge.gradle'
 
 
 version = '1.18.2-1.1.0'
-group = 'teamfusion.betta' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
-archivesBaseName = 'betta-forge'
+group = 'teamfusion.bettas' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
+archivesBaseName = 'bettas-forge'
 
 // Mojang ships Java 17 to end users in 1.18+, so your mod should target Java 17.
 java.toolchain.languageVersion = JavaLanguageVersion.of(17)
