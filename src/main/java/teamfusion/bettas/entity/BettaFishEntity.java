@@ -183,9 +183,9 @@ public class BettaFishEntity extends AbstractFish implements Bucketable {
 		}
 	}
 
-	private boolean isMossBallNearby(boolean checkEntity) {
+	private boolean isMossBallNearby(boolean afterCheck) {
 		boolean flag = false;
-		int mossCount = checkEntity ? 0 : 1;
+		int mossCount = afterCheck ? 0 : 1;
 		BlockPos blockpos = this.blockPosition();
 		BlockPos.MutableBlockPos blockpos$mutable = new BlockPos.MutableBlockPos();
 
