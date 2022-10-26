@@ -72,17 +72,7 @@ public class BettaFishEntity extends AbstractFish implements Bucketable {
 			}
 		});
 		this.goalSelector.addGoal(1, new RandomSwimmingGoal(this, 1.0D, 20));
-		this.targetSelector.addGoal(0, new HurtByTargetGoal(this, BettaFishEntity.class) {
-			@Override
-			public boolean canUse() {
-				return !isCalmed() && super.canUse();
-			}
-
-			@Override
-			public boolean canContinueToUse() {
-				return !isCalmed() && super.canContinueToUse();
-			}
-		});
+		this.targetSelector.addGoal(0, new HurtByTargetGoal(this, BettaFishEntity.class));
 		this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, BettaFishEntity.class, false) {
 			@Override
 			public boolean canUse() {
