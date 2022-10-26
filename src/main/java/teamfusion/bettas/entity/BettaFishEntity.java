@@ -174,16 +174,18 @@ public class BettaFishEntity extends AbstractFish implements Bucketable {
 		super.tick();
 
 		if (!this.level.isClientSide()) {
-			if (isMossBallNearby(true) && !isCalmed()) {
+			if (isMossBallNearby() && !isCalmed()) {
 
 				this.setCalmed(true);
-			} else if (isCalmed() && !isMossBallNearby(false)) {
+			} else if (isCalmed() && !isMossBallNearby()) {
 				this.setCalmed(false);
 			}
 		}
 	}
 
-	private boolean isMossBallNearby(boolean checkEntity) {
+	private boolean isMossBallNearby() {
+		boolean flag = false;
+		int mossCount = 0;
 		BlockPos blockpos = this.blockPosition();
 		BlockPos.MutableBlockPos blockpos$mutable = new BlockPos.MutableBlockPos();
 
@@ -193,23 +195,20 @@ public class BettaFishEntity extends AbstractFish implements Bucketable {
 					for (int l = k < j && k > -j ? j : 0; l <= j; l = l > 0 ? -l : 1 - l) {
 						blockpos$mutable.setWithOffset(blockpos, k, i, l);
 						if (this.level.getBlockState(blockpos$mutable).is(BettasBlocks.MOSS_BALL.get())) {
-							if (checkEntity) {
-								List<? extends BettaFishEntity> list = this.level.getEntities(BettasEntities.BETTA_FISH.get(), this.getBoundingBox().inflate(8.0D), CALMED_ENTITY);
-
-								if (list.isEmpty() || list.size() < 2 * this.level.getBlockState(blockpos$mutable).getValue(MossBallBlock.BALLS)) {
-									return true;
-								} else {
-									return false;
-								}
-							} else {
-								return true;
-							}
+							flag = true;
+							mossCount += this.level.getBlockState(blockpos$mutable).getValue(MossBallBlock.BALLS);
 						}
 					}
 				}
 			}
 		}
+		if (flag) {
+			List<? extends BettaFishEntity> list = this.level.getEntities(BettasEntities.BETTA_FISH.get(), this.getBoundingBox().inflate(8.0D), CALMED_ENTITY);
 
+			if (list.isEmpty() || list.size() < 2 * mossCount) {
+				return true;
+			}
+		}
 		return false;
 	}
 
