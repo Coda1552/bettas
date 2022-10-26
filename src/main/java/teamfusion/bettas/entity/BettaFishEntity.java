@@ -173,9 +173,9 @@ public class BettaFishEntity extends AbstractFish implements Bucketable {
         if (!this.level.isClientSide()) {
             if (isMossBallNearby() && !isCalmed()) {
 
-                this.setCalmed();
+                this.setCalmed(true);
             } else if (isCalmed() && !isMossBallNearby()) {
-                this.setCalmed();
+                this.setCalmed(false);
             }
         }
     }
