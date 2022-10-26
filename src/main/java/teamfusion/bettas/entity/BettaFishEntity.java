@@ -197,6 +197,9 @@ public class BettaFishEntity extends AbstractFish implements Bucketable {
 						if (this.level.getBlockState(blockpos$mutable).is(BettasBlocks.MOSS_BALL.get())) {
 							flag = true;
 							mossCount += this.level.getBlockState(blockpos$mutable).getValue(MossBallBlock.BALLS);
+						} else if (this.level.getBlockState(blockpos$mutable).is(BettasBlocks.MOSS_BALL_BLOCK.get())) {
+							flag = true;
+							mossCount += 8;
 						}
 					}
 				}
