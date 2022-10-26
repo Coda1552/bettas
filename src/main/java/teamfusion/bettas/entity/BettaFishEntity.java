@@ -35,6 +35,7 @@ import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
+import teamfusion.bettas.block.MossBallBlock;
 import teamfusion.bettas.init.BettasBlocks;
 import teamfusion.bettas.init.BettasEntities;
 import teamfusion.bettas.init.BettasItems;
@@ -169,21 +170,17 @@ public class BettaFishEntity extends AbstractFish implements Bucketable {
     @Override
     public void tick() {
         super.tick();
-
         if (!this.level.isClientSide()) {
-            if (isMossBallNearby() && !isCalmed()) {
-                List<? extends BettaFishEntity> list = this.level.getEntities(BettasEntities.BETTA_FISH.get(), this.getBoundingBox().inflate(8.0D), CALMED_ENTITY);
+            if (isMossBallNearby(true) && !isCalmed()) {
 
-                if (list.isEmpty() || list.size() < 2) {
-                    this.setCalmed(true);
-                }
-            } else if (isCalmed() && !isMossBallNearby()) {
+                this.setCalmed(true);
+            } else if (isCalmed() && !isMossBallNearby(false)) {
                 this.setCalmed(false);
             }
         }
     }
 
-    private boolean isMossBallNearby() {
+    private boolean isMossBallNearby(boolean checkEntity) {
         BlockPos blockpos = this.blockPosition();
         BlockPos.MutableBlockPos blockpos$mutable = new BlockPos.MutableBlockPos();
 
@@ -192,8 +189,18 @@ public class BettaFishEntity extends AbstractFish implements Bucketable {
                 for (int k = 0; k <= j; k = k > 0 ? -k : 1 - k) {
                     for (int l = k < j && k > -j ? j : 0; l <= j; l = l > 0 ? -l : 1 - l) {
                         blockpos$mutable.setWithOffset(blockpos, k, i, l);
-                        if (this.level.getBlockState(blockpos$mutable).is(BettasBlocks.MOSS_BALL_BLOCK.get())) {
-                            return true;
+                        if (this.level.getBlockState(blockpos$mutable).is(BettasBlocks.MOSS_BALL.get())) {
+                            if (checkEntity) {
+                                List<? extends BettaFishEntity> list = this.level.getEntities(BettasEntities.BETTA_FISH.get(), this.getBoundingBox().inflate(8.0D), CALMED_ENTITY);
+
+                                if (list.isEmpty() || list.size() < 2 * this.level.getBlockState(blockpos$mutable).getValue(MossBallBlock.BALLS)) {
+                                    return true;
+                                } else {
+                                    return false;
+                                }
+                            } else {
+                                return true;
+                            }
                         }
                     }
                 }
