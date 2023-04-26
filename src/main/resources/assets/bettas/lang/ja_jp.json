@@ -1,0 +1,14 @@
+{
+  "entity.bettas.betta_fish": "ベタ",
+
+  "item.bettas.betta_fish": "ベタ",
+  "item.bettas.betta_fish_bucket": "ベタ入りバケツ",
+  "item.bettas.betta_fish_spawn_egg": "ベタのスポーンエッグ",
+  "item.bettas.blackwater_bottle": "ブラックウォーター入りの瓶",
+
+  "block.bettas.moss_ball": "マリモ",
+  "block.bettas.moss_ball_block": "マリモブロック",
+  "block.bettas.dried_leaves": "乾燥した落ち葉",
+
+  "itemGroup.bettas": "Bettas"
+}
