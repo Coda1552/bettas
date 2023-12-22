@@ -1,7 +1,7 @@
 package teamfusion.bettas.client.renderer;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Vector3f;
+import com.mojang.math.Axis;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.geom.ModelLayerLocation;
@@ -52,10 +52,10 @@ public class BettaFishRenderer extends MobRenderer<BettaFishEntity, BettaFishMod
     protected void setupRotations(BettaFishEntity entityLiving, PoseStack matrixStackIn, float ageInTicks, float rotationYaw, float partialTicks) {
         super.setupRotations(entityLiving, matrixStackIn, ageInTicks, rotationYaw, partialTicks);
         float f = 4.3F * Mth.sin(0.6F * ageInTicks);
-        matrixStackIn.mulPose(Vector3f.YP.rotationDegrees(f));
+        matrixStackIn.mulPose(Axis.YP.rotationDegrees(f));
         if (!entityLiving.isInWater()) {
             matrixStackIn.translate(0.2d, 0.1d, 0);
-            matrixStackIn.mulPose(Vector3f.ZP.rotationDegrees(90.0F));
+            matrixStackIn.mulPose(Axis.ZP.rotationDegrees(90.0F));
         }
     }
 }

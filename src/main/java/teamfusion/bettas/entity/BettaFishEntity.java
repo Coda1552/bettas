@@ -125,7 +125,7 @@ public class BettaFishEntity extends AbstractFish implements Bucketable {
 	}
 
 	public boolean doHurtTarget(Entity entityIn) {
-		boolean flag = entityIn.hurt(DamageSource.mobAttack(this), (float) ((int) this.getAttributeValue(Attributes.ATTACK_DAMAGE)));
+		boolean flag = entityIn.hurt(damageSources().mobAttack(this), (float) ((int) this.getAttributeValue(Attributes.ATTACK_DAMAGE)));
 		if (flag) {
 			this.doEnchantDamageEffects(this, entityIn);
 		}
@@ -153,7 +153,7 @@ public class BettaFishEntity extends AbstractFish implements Bucketable {
 	public void tick() {
 		super.tick();
 
-		if (!this.level.isClientSide()) {
+		if (!this.level().isClientSide()) {
 			if (isFromBucket() && isMossBallNearby(true) && !isCalmed()) {
 
 				this.setCalmed(true);
@@ -174,10 +174,10 @@ public class BettaFishEntity extends AbstractFish implements Bucketable {
 				for (int k = 0; k <= j; k = k > 0 ? -k : 1 - k) {
 					for (int l = k < j && k > -j ? j : 0; l <= j; l = l > 0 ? -l : 1 - l) {
 						blockpos$mutable.setWithOffset(blockpos, k, i, l);
-						if (this.level.getBlockState(blockpos$mutable).is(BettasBlocks.MOSS_BALL.get())) {
+						if (this.level().getBlockState(blockpos$mutable).is(BettasBlocks.MOSS_BALL.get())) {
 							flag = true;
-							mossCount += this.level.getBlockState(blockpos$mutable).getValue(MossBallBlock.BALLS);
-						} else if (this.level.getBlockState(blockpos$mutable).is(BettasBlocks.MOSS_BALL_BLOCK.get())) {
+							mossCount += this.level().getBlockState(blockpos$mutable).getValue(MossBallBlock.BALLS);
+						} else if (this.level().getBlockState(blockpos$mutable).is(BettasBlocks.MOSS_BALL_BLOCK.get())) {
 							flag = true;
 							mossCount += 8;
 						}
@@ -186,7 +186,7 @@ public class BettaFishEntity extends AbstractFish implements Bucketable {
 			}
 		}
 		if (flag) {
-			List<? extends BettaFishEntity> list = this.level.getEntities(BettasEntities.BETTA_FISH.get(), this.getBoundingBox().inflate(8.0D), CALMED_ENTITY);
+			List<? extends BettaFishEntity> list = this.level().getEntities(BettasEntities.BETTA_FISH.get(), this.getBoundingBox().inflate(8.0D), CALMED_ENTITY);
 
 			if (list.isEmpty() || list.size() < 2 * mossCount) {
 				return true;
@@ -272,7 +272,7 @@ public class BettaFishEntity extends AbstractFish implements Bucketable {
 			double d0 = this.random.nextGaussian() * 0.02D;
 			double d1 = this.random.nextGaussian() * 0.02D;
 			double d2 = this.random.nextGaussian() * 0.02D;
-			this.level.addParticle(ParticleTypes.HEART, this.getRandomX(1.0D), this.getRandomY() + 0.5D, this.getRandomZ(1.0D), d0, d1, d2);
+			this.level().addParticle(ParticleTypes.HEART, this.getRandomX(1.0D), this.getRandomY() + 0.5D, this.getRandomZ(1.0D), d0, d1, d2);
 			return InteractionResult.PASS;
 		}
 		return super.interactAt(player, vec, hand);

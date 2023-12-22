@@ -17,13 +17,7 @@ import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.fml.util.ObfuscationReflectionHelper;
 import teamfusion.bettas.entity.BettaFishEntity;
-import teamfusion.bettas.init.BettaBiomeModifiers;
-import teamfusion.bettas.init.BettasBlocks;
-import teamfusion.bettas.init.BettasConfiguredFeatures;
-import teamfusion.bettas.init.BettasEntities;
-import teamfusion.bettas.init.BettasFeatures;
-import teamfusion.bettas.init.BettasItems;
-import teamfusion.bettas.init.BettasPlacedFeatures;
+import teamfusion.bettas.init.*;
 
 import java.util.List;
 
@@ -41,8 +35,9 @@ public class Bettas {
         BettasBlocks.BLOCKS.register(bus);
         BettasEntities.ENTITIES.register(bus);
         BettasFeatures.FEATURES.register(bus);
-        BettasConfiguredFeatures.CONFIGURED_FEATURES.register(bus);
-        BettasPlacedFeatures.PLACED_FEATURES.register(bus);
+        //BettasConfiguredFeatures.CONFIGURED_FEATURES.register(bus);
+        //BettasPlacedFeatures.PLACED_FEATURES.register(bus);
+        BettasTabs.TABS.register(bus);
 
         bus.addListener(this::registerEntityAttributes);
 

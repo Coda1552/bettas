@@ -106,7 +106,8 @@ public class MossBallBlock extends BushBlock implements SimpleWaterloggedBlock, 
         builder.add(BALLS, WATERLOGGED);
     }
 
-    public boolean isValidBonemealTarget(BlockGetter worldIn, BlockPos pos, BlockState state, boolean isClient) {
+    @Override
+    public boolean isValidBonemealTarget(LevelReader pLevel, BlockPos pPos, BlockState pState, boolean pIsClient) {
         return true;
     }
 
