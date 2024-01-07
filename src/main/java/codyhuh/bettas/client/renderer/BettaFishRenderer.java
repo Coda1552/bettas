@@ -1,5 +1,7 @@
-package teamfusion.bettas.client.renderer;
+package codyhuh.bettas.client.renderer;
 
+import codyhuh.bettas.Bettas;
+import codyhuh.bettas.entity.BettaFishEntity;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import net.minecraft.ChatFormatting;
@@ -11,9 +13,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import teamfusion.bettas.Bettas;
-import teamfusion.bettas.client.model.BettaFishModel;
-import teamfusion.bettas.entity.BettaFishEntity;
+import codyhuh.bettas.client.model.BettaFishModel;
 
 @OnlyIn(Dist.CLIENT)
 public class BettaFishRenderer extends MobRenderer<BettaFishEntity, BettaFishModel<BettaFishEntity>> {

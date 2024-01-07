@@ -1,22 +1,16 @@
-package teamfusion.bettas.biome;
+package codyhuh.bettas.biome;
 
 import com.mojang.serialization.Codec;
 import net.minecraft.core.Holder;
 import net.minecraft.tags.BiomeTags;
-import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.level.biome.Biome;
-import net.minecraft.world.level.biome.Biomes;
 import net.minecraft.world.level.biome.MobSpawnSettings;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.world.BiomeModifier;
-import net.minecraftforge.common.world.MobSpawnSettingsBuilder;
 import net.minecraftforge.common.world.ModifiableBiomeInfo;
-import net.minecraftforge.registries.ForgeRegistries;
-import teamfusion.bettas.init.BettaBiomeModifiers;
-import teamfusion.bettas.init.BettasEntities;
-
-import java.util.List;
+import codyhuh.bettas.init.BettaBiomeModifiers;
+import codyhuh.bettas.init.BettasEntities;
 
 public class BettaBiomeModifier implements BiomeModifier {
 	public static final BettaBiomeModifier INSTANCE = new BettaBiomeModifier();

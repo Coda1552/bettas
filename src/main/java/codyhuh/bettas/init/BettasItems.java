@@ -1,4 +1,4 @@
-package teamfusion.bettas.init;
+package codyhuh.bettas.init;
 
 import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.BlockItem;
@@ -9,8 +9,8 @@ import net.minecraftforge.common.ForgeSpawnEggItem;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
-import teamfusion.bettas.Bettas;
-import teamfusion.bettas.item.BettasBucketItem;
+import codyhuh.bettas.Bettas;
+import codyhuh.bettas.item.BettasBucketItem;
 
 public class BettasItems {
     public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, Bettas.MOD_ID);

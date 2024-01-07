@@ -1,4 +1,4 @@
-package teamfusion.bettas.block;
+package codyhuh.bettas.block;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -24,7 +24,7 @@ import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import teamfusion.bettas.init.BettasBlocks;
+import codyhuh.bettas.init.BettasBlocks;
 
 import javax.annotation.Nullable;
 

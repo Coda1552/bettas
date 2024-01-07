@@ -1,13 +1,13 @@
-package teamfusion.bettas.init;
+package codyhuh.bettas.init;
 
+import codyhuh.bettas.entity.BettaFishEntity;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
-import teamfusion.bettas.Bettas;
-import teamfusion.bettas.entity.BettaFishEntity;
+import codyhuh.bettas.Bettas;
 
 public class BettasEntities {
     public static final DeferredRegister<EntityType<?>> ENTITIES = DeferredRegister.create(ForgeRegistries.ENTITY_TYPES, Bettas.MOD_ID);

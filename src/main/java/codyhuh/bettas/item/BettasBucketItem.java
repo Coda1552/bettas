@@ -1,4 +1,4 @@
-package teamfusion.bettas.item;
+package codyhuh.bettas.item;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.advancements.CriteriaTriggers;
