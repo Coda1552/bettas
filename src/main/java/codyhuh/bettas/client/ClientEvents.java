@@ -16,7 +16,7 @@ public class ClientEvents {
 
     @SubscribeEvent
     public static void registerLayerDefinition(EntityRenderersEvent.RegisterLayerDefinitions event) {
-        event.registerLayerDefinition(BettaFishRenderer.MODEL_LAYER, BettaFishModel::createLayerDefinition);
+        event.registerLayerDefinition(BettaFishRenderer.MODEL_LAYER, BettaFishModel::createBodyLayer);
     }
 
 
